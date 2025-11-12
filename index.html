@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ricerca Codice Segreto</title>
+    <title>Decifratore di Codici Multi-Utente</title>
     <!-- Carico Tailwind CSS per uno stile moderno e responsive -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -24,63 +24,173 @@
             outline: none;
             box-shadow: 0 0 0 4px rgba(66, 153, 225, 0.5); /* blu */
         }
+        .hidden { display: none; }
     </style>
 </head>
 <body class="p-4 flex items-center justify-center">
 
     <div class="w-full max-w-md bg-white p-6 md:p-8 shadow-2xl rounded-xl">
         <h1 class="text-3xl font-bold text-center text-gray-800 mb-2">Decifratore di Codici</h1>
-        <p class="text-center text-gray-500 mb-8">Inserisci il codice segreto trovato per ricevere l'indizio successivo.</p>
-
-        <!-- Area di Input -->
-        <div class="space-y-4">
-            <input type="text" id="codeInput" placeholder="Inserisci il codice qui (es. 1, albero, ecc.)"
-                   class="w-full p-3 border-2 border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 text-lg uppercase tracking-wider"
-                   maxlength="50" onkeyup="if(event.key === 'Enter') checkCode()">
-            
-            <button onclick="checkCode()"
-                    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg shadow-lg transition duration-200 ease-in-out transform hover:scale-[1.01]">
-                Controlla Codice
-            </button>
+        
+        <!-- ============================================== -->
+        <!-- FASE 1: INSERIMENTO CODICE UTENTE -->
+        <!-- ============================================== -->
+        <div id="userIdView" class="space-y-6">
+            <p class="text-center text-gray-500 mb-6">Inserisci il codice identificativo del tuo gruppo per iniziare (es. A, U, Squadra1).</p>
+            <div class="space-y-4">
+                <input type="text" id="userIdInput" placeholder="Codice Utente / Gruppo"
+                       class="w-full p-3 border-2 border-orange-300 rounded-lg focus:ring-orange-500 focus:border-orange-500 text-lg uppercase tracking-wider"
+                       maxlength="10" onkeyup="if(event.key === 'Enter') saveUserId()">
+                
+                <button onclick="saveUserId()"
+                        class="w-full bg-orange-600 hover:bg-orange-700 text-white font-semibold py-3 rounded-lg shadow-lg transition duration-200 ease-in-out transform hover:scale-[1.01]">
+                    Accedi e Avvia il Gioco
+                </button>
+            </div>
         </div>
 
-        <!-- Area dei Risultati/Messaggio -->
-        <div id="resultBox" class="mt-8 p-4 md:p-6 rounded-xl border border-dashed border-gray-300 flex items-center justify-center text-center">
-            <p id="resultMessage" class="text-gray-500 italic text-base md:text-lg">Il risultato apparirà qui dopo aver inserito un codice.</p>
+        <!-- ============================================== -->
+        <!-- FASE 2: INSERIMENTO CODICI DI GIOCO -->
+        <!-- ============================================== -->
+        <div id="gameCodeView" class="space-y-6 hidden">
+            <p id="welcomeMessage" class="text-center text-green-600 font-semibold text-lg mb-4">Benvenuto!</p>
+            <p class="text-center text-gray-500">Inserisci il codice di gioco trovato. La tua chiave è personale.</p>
+
+            <div class="space-y-4">
+                <input type="text" id="codeInput" placeholder="Codice di Gioco (es. 001, LUCE)"
+                       class="w-full p-3 border-2 border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 text-lg uppercase tracking-wider"
+                       maxlength="50" onkeyup="if(event.key === 'Enter') checkCode()">
+                
+                <button onclick="checkCode()"
+                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg shadow-lg transition duration-200 ease-in-out transform hover:scale-[1.01]">
+                    Controlla Codice
+                </button>
+            </div>
+
+            <!-- Area dei Risultati/Messaggio -->
+            <div id="resultBox" class="mt-8 p-4 md:p-6 rounded-xl border border-dashed border-gray-300 flex items-center justify-center text-center">
+                <p id="resultMessage" class="text-gray-500 italic text-base md:text-lg">Il risultato apparirà qui dopo aver inserito un codice.</p>
+            </div>
+            
+            <!-- Pulsante di cambio utente (per resettare) -->
+            <button onclick="resetUser()"
+                    class="w-full text-sm text-gray-500 hover:text-red-500 transition duration-200 mt-4">
+                Cambia Utente / Gruppo
+            </button>
         </div>
 
         <!-- Sezione per la Logica di Gioco e i Codici -->
         <div id="game-logic" class="mt-8 p-4 bg-gray-100 rounded-lg text-sm text-gray-600">
-            <p class="font-semibold mb-2">Configurazione (solo per l'amministratore):</p>
-            <p>La tabella dei codici è definita nel codice JavaScript qui sotto e può essere facilmente modificata. È case-insensitive.</p>
+            <p class="font-semibold mb-2">Configurazione:</p>
+            <p>I codici sono cercati come: <code>[CodiceUtente]-[CodiceGioco]</code>. Modifica la sezione <code>CODE_MAP</code> nel JavaScript.</p>
         </div>
     </div>
 
     <script>
         // ------------------------------------------------------------------------------------------------
-        // LOGICA PRINCIPALE DELL'APP
+        // LOGICA PRINCIPALE E MAPPA DEI CODICI
         // ------------------------------------------------------------------------------------------------
 
+        // Variabile globale che conterrà il prefisso utente corrente (es. "A" o "U")
+        let currentUserPrefix = null;
+        const USER_PREFIX_KEY = 'gameUserPrefix';
+
         // La TABELLA DEI CODICI E MESSAGGI è definita come un oggetto JavaScript.
-        // Chiave (Key): Il codice che gli utenti devono inserire.
-        // Valore (Value): Il messaggio/indizio che l'app deve restituire.
-        // MODIFICA QUESTA SEZIONE PER AGGIORNARE I TUOI CODICI DI GIOCO.
+        // STRUTTURA: "CODICEUTENTE-CODICEGIOCO" : "MESSAGGIO PERSONALIZZATO"
+        // Esempi: "A-001" è per Utente A, Codice 001
+        //         "U-001" è per Utente U, Codice 001
+        // MODIFICA QUESTA SEZIONE PER AGGIORNARE I TUOI CODICI DI GIOCO PERSONALIZZATI.
         const CODE_MAP = {
-            // Esempi che hai fornito
-            "1": "Mela: Ottimo inizio! La prossima parola è la risposta a: 'Cosa ha le radici ma non cammina?'",
-            "2": "Albero: Esatto! Per il prossimo indizio, sommate i numeri sulle tre monete romane più vecchie trovate nella stanza.",
-            "3": "Quattordici: Non male! L'indizio finale è nascosto sotto l'oggetto più pesante della stanza.",
+            // ESEMPI PER L'UTENTE "A"
+            "A-001": "Gruppo A: Hai sbloccato la cassetta del tesoro. L'indizio è sul pavimento.",
+            "A-LUCE": "Gruppo A: OK, il prossimo passo è trovare il libro rosso nell'angolo.",
             
-            // Aggiungi qui i tuoi codici personalizzati (stringa) : (stringa messaggio)
-            "LUCE18": "Il vaso è la chiave, ma non quello in terracotta.",
-            "CHIAVEA": "Guardate in alto: ciò che cercate è appeso al lampadario.",
-            "SOLLEVA": "La soluzione è la password del computer spento.",
-            "G-T-R": "Complimenti, hai finito il gioco! Tempo impiegato: 12 minuti.",
+            // ESEMPI PER L'UTENTE "U"
+            "U-001": "Gruppo U: Ottimo! L'indizio è dietro il quadro più grande appeso al muro.",
+            "U-LUCE": "Gruppo U: Avanti! La parola chiave successiva è la capitale dell'Italia.",
+
+            // ESEMPI PER CODICI NON DIPENDENTI DALL'UTENTE (senza prefisso)
+            "FINALE": "Complimenti a tutti! Avete completato l'Escape Game!",
         };
 
+        // Riferimenti agli elementi HTML
+        const userIdInput = document.getElementById('userIdInput');
         const codeInput = document.getElementById('codeInput');
         const resultMessage = document.getElementById('resultMessage');
         const resultBox = document.getElementById('resultBox');
+        const userIdView = document.getElementById('userIdView');
+        const gameCodeView = document.getElementById('gameCodeView');
+        const welcomeMessage = document.getElementById('welcomeMessage');
+
+
+        // Funzione eseguita al caricamento della pagina
+        window.onload = function() {
+            loadUserId();
+        };
+
+        // ----------------------------------------------------------------
+        // GESTIONE UTENTE
+        // ----------------------------------------------------------------
+
+        // Carica il prefisso utente salvato in localStorage
+        function loadUserId() {
+            const savedPrefix = localStorage.getItem(USER_PREFIX_KEY);
+            if (savedPrefix) {
+                currentUserPrefix = savedPrefix;
+                showGameView(savedPrefix);
+            } else {
+                showUserIdView();
+            }
+        }
+
+        // Salva il prefisso utente inserito
+        function saveUserId() {
+            let inputPrefix = userIdInput.value.trim().toUpperCase();
+
+            if (inputPrefix.length < 1) {
+                alertUser("Per favore, inserisci un codice utente valido.");
+                return;
+            }
+
+            // Pulizia del prefisso
+            inputPrefix = inputPrefix.replace(/[^A-Z0-9]/g, ''); // Rimuove caratteri non alfanumerici
+
+            localStorage.setItem(USER_PREFIX_KEY, inputPrefix);
+            currentUserPrefix = inputPrefix;
+            showGameView(inputPrefix);
+        }
+
+        // Resetta l'utente e torna alla schermata di login
+        function resetUser() {
+            localStorage.removeItem(USER_PREFIX_KEY);
+            currentUserPrefix = null;
+            showUserIdView();
+        }
+
+        // ----------------------------------------------------------------
+        // CAMBIO DI VISTA
+        // ----------------------------------------------------------------
+
+        function showUserIdView() {
+            userIdView.classList.remove('hidden');
+            gameCodeView.classList.add('hidden');
+            resultBox.classList.remove('border-green-500', 'bg-green-100', 'border-red-500', 'bg-red-100');
+            resultBox.classList.add('border-gray-300');
+            resultMessage.textContent = "Il risultato apparirà qui dopo aver inserito un codice.";
+            userIdInput.focus();
+        }
+
+        function showGameView(prefix) {
+            welcomeMessage.textContent = `Benvenuto, Utente ${prefix}!`;
+            userIdView.classList.add('hidden');
+            gameCodeView.classList.remove('hidden');
+            codeInput.focus();
+        }
+
+
+        // ----------------------------------------------------------------
+        // GESTIONE CODICI DI GIOCO
+        // ----------------------------------------------------------------
 
         // Funzione per mostrare il messaggio di risultato (successo o errore)
         function displayResult(message, isSuccess = true) {
@@ -101,30 +211,48 @@
                 resultMessage.classList.add('text-red-700');
             }
         }
+        
+        // Funzione alternativa ad alert(), dato che non possiamo usarla.
+        function alertUser(message) {
+            alert(message); // Nota: in un ambiente Canvas reale useresti un modale custom
+            console.error("ERRORE UTENTE:", message); 
+        }
 
         // Funzione principale di controllo del codice
         function checkCode() {
-            // Ottengo l'input e lo normalizzo:
-            // 1. Rimuovo spazi bianchi all'inizio e alla fine (trim)
-            // 2. Converto tutto in maiuscolo per rendere il matching case-insensitive
-            const inputCode = codeInput.value.trim().toUpperCase();
+            if (!currentUserPrefix) {
+                // Questo non dovrebbe succedere, ma è un'ottima safety check
+                displayResult("ERRORE: Riavvia l'app e inserisci il codice utente.", false);
+                return;
+            }
+
+            // Ottengo l'input del codice di gioco e lo normalizzo (maiuscolo e senza spazi)
+            const inputGameCode = codeInput.value.trim().toUpperCase();
 
             // Svuoto il campo input dopo l'invio
             codeInput.value = '';
 
-            if (inputCode === "") {
-                displayResult("Per favore, inserisci un codice per continuare.", false);
+            if (inputGameCode === "") {
+                displayResult("Per favore, inserisci un codice di gioco.", false);
                 return;
             }
 
-            // 3. Eseguo la ricerca nella mappa dei codici
-            if (CODE_MAP.hasOwnProperty(inputCode)) {
-                // Codice trovato! Restituisco il messaggio associato
-                const resultText = CODE_MAP[inputCode];
-                displayResult(`Codice Accettato! Indizio:\n\n${resultText}`, true);
+            // Costruisco la chiave di ricerca: [PREFISSO UTENTE]-[CODICE GIOCO]
+            const searchKey = `${currentUserPrefix}-${inputGameCode}`;
+
+            // 1. Eseguo la ricerca con la chiave personalizzata
+            if (CODE_MAP.hasOwnProperty(searchKey)) {
+                const resultText = CODE_MAP[searchKey];
+                displayResult(`Codice Accettato per ${currentUserPrefix}! Indizio:\n\n${resultText}`, true);
+            
+            // 2. Se non la trovo, provo a cercare se esiste un codice "generico" (senza prefisso)
+            } else if (CODE_MAP.hasOwnProperty(inputGameCode)) {
+                const resultText = CODE_MAP[inputGameCode];
+                displayResult(`Codice Generico Accettato! Indizio:\n\n${resultText}`, true);
+
+            // 3. Codice NON trovato
             } else {
-                // Codice NON trovato
-                displayResult(`"${inputCode}" non è un codice valido in questo momento. Riprova!`, false);
+                displayResult(`"${inputGameCode}" non è un codice valido in questo momento. Riprova!`, false);
             }
         }
     </script>
