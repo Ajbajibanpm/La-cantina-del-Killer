@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ricerca Codice Segreto</title>
+    <!-- Carico Tailwind CSS per uno stile moderno e responsive -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Imposto il font Inter (consigliato per l'UI) */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f7f7;
+            min-height: 100vh;
+        }
+        /* Custom styles per l'input e l'area risultati */
+        #resultBox {
+            min-height: 150px;
+            transition: all 0.3s ease;
+        }
+        /* Aggiungo un focus state personalizzato al pulsante */
+        button:focus {
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(66, 153, 225, 0.5); /* blu */
+        }
+    </style>
+</head>
+<body class="p-4 flex items-center justify-center">
+
+    <div class="w-full max-w-md bg-white p-6 md:p-8 shadow-2xl rounded-xl">
+        <h1 class="text-3xl font-bold text-center text-gray-800 mb-2">Decifratore di Codici</h1>
+        <p class="text-center text-gray-500 mb-8">Inserisci il codice segreto trovato per ricevere l'indizio successivo.</p>
+
+        <!-- Area di Input -->
+        <div class="space-y-4">
+            <input type="text" id="codeInput" placeholder="Inserisci il codice qui (es. 1, albero, ecc.)"
+                   class="w-full p-3 border-2 border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 text-lg uppercase tracking-wider"
+                   maxlength="50" onkeyup="if(event.key === 'Enter') checkCode()">
+            
+            <button onclick="checkCode()"
+                    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg shadow-lg transition duration-200 ease-in-out transform hover:scale-[1.01]">
+                Controlla Codice
+            </button>
+        </div>
+
+        <!-- Area dei Risultati/Messaggio -->
+        <div id="resultBox" class="mt-8 p-4 md:p-6 rounded-xl border border-dashed border-gray-300 flex items-center justify-center text-center">
+            <p id="resultMessage" class="text-gray-500 italic text-base md:text-lg">Il risultato apparirà qui dopo aver inserito un codice.</p>
+        </div>
+
+        <!-- Sezione per la Logica di Gioco e i Codici -->
+        <div id="game-logic" class="mt-8 p-4 bg-gray-100 rounded-lg text-sm text-gray-600">
+            <p class="font-semibold mb-2">Configurazione (solo per l'amministratore):</p>
+            <p>La tabella dei codici è definita nel codice JavaScript qui sotto e può essere facilmente modificata. È case-insensitive.</p>
+        </div>
+    </div>
+
+    <script>
+        // ------------------------------------------------------------------------------------------------
+        // LOGICA PRINCIPALE DELL'APP
+        // ------------------------------------------------------------------------------------------------
+
+        // La TABELLA DEI CODICI E MESSAGGI è definita come un oggetto JavaScript.
+        // Chiave (Key): Il codice che gli utenti devono inserire.
+        // Valore (Value): Il messaggio/indizio che l'app deve restituire.
+        // MODIFICA QUESTA SEZIONE PER AGGIORNARE I TUOI CODICI DI GIOCO.
+        const CODE_MAP = {
+            // Esempi che hai fornito
+            "1": "Mela: Ottimo inizio! La prossima parola è la risposta a: 'Cosa ha le radici ma non cammina?'",
+            "2": "Albero: Esatto! Per il prossimo indizio, sommate i numeri sulle tre monete romane più vecchie trovate nella stanza.",
+            "3": "Quattordici: Non male! L'indizio finale è nascosto sotto l'oggetto più pesante della stanza.",
+            
+            // Aggiungi qui i tuoi codici personalizzati (stringa) : (stringa messaggio)
+            "LUCE18": "Il vaso è la chiave, ma non quello in terracotta.",
+            "CHIAVEA": "Guardate in alto: ciò che cercate è appeso al lampadario.",
+            "SOLLEVA": "La soluzione è la password del computer spento.",
+            "G-T-R": "Complimenti, hai finito il gioco! Tempo impiegato: 12 minuti.",
+        };
+
+        const codeInput = document.getElementById('codeInput');
+        const resultMessage = document.getElementById('resultMessage');
+        const resultBox = document.getElementById('resultBox');
+
+        // Funzione per mostrare il messaggio di risultato (successo o errore)
+        function displayResult(message, isSuccess = true) {
+            resultMessage.textContent = message;
+            
+            // Aggiorno gli stili per indicare successo o fallimento
+            resultBox.classList.remove('border-gray-300', 'border-red-500', 'bg-red-100', 'border-green-500', 'bg-green-100');
+            
+            if (isSuccess) {
+                // Stili per Successo (verde)
+                resultBox.classList.add('border-green-500', 'bg-green-100');
+                resultMessage.classList.remove('text-gray-500', 'text-red-700', 'italic');
+                resultMessage.classList.add('text-green-800', 'font-semibold');
+            } else {
+                // Stili per Errore (rosso)
+                resultBox.classList.add('border-red-500', 'bg-red-100');
+                resultMessage.classList.remove('text-gray-500', 'text-green-800', 'font-semibold');
+                resultMessage.classList.add('text-red-700');
+            }
+        }
+
+        // Funzione principale di controllo del codice
+        function checkCode() {
+            // Ottengo l'input e lo normalizzo:
+            // 1. Rimuovo spazi bianchi all'inizio e alla fine (trim)
+            // 2. Converto tutto in maiuscolo per rendere il matching case-insensitive
+            const inputCode = codeInput.value.trim().toUpperCase();
+
+            // Svuoto il campo input dopo l'invio
+            codeInput.value = '';
+
+            if (inputCode === "") {
+                displayResult("Per favore, inserisci un codice per continuare.", false);
+                return;
+            }
+
+            // 3. Eseguo la ricerca nella mappa dei codici
+            if (CODE_MAP.hasOwnProperty(inputCode)) {
+                // Codice trovato! Restituisco il messaggio associato
+                const resultText = CODE_MAP[inputCode];
+                displayResult(`Codice Accettato! Indizio:\n\n${resultText}`, true);
+            } else {
+                // Codice NON trovato
+                displayResult(`"${inputCode}" non è un codice valido in questo momento. Riprova!`, false);
+            }
+        }
+    </script>
+</body>
+</html>
