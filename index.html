@@ -16,8 +16,21 @@
         }
         /* Custom styles per l'input e l'area risultati */
         #resultBox {
-            min-height: 150px;
+            min-height: 120px;
             transition: all 0.3s ease;
+        }
+        #subjectFeedbackBox {
+             min-height: 50px;
+             transition: all 0.3s ease;
+        }
+        /* Stile per i soggetti cliccabili */
+        .clickable-subject {
+            cursor: pointer;
+            transition: color 0.15s ease, font-weight 0.15s ease;
+        }
+        .clickable-subject:hover {
+            color: #2563EB; /* Blu intenso */
+            font-weight: 600;
         }
         /* Aggiungo un focus state personalizzato al pulsante */
         button:focus {
@@ -33,43 +46,75 @@
         <h1 class="text-3xl font-bold text-center text-gray-800 mb-2">Decifratore di Codici</h1>
         
         <!-- ============================================== -->
-        <!-- FASE 1: INSERIMENTO CODICE UTENTE -->
+        <!-- FASE 1: INSERIMENTO CODICE GRUPPO -->
         <!-- ============================================== -->
         <div id="userIdView" class="space-y-6">
-            <p class="text-center text-gray-500 mb-6">Inserisci il codice identificativo del tuo gruppo per iniziare (es. A, U, Squadra1).</p>
+            <!-- Testo di istruzione AGGIORNATO -->
+            <p class="text-center text-gray-500 mb-6">Inserisci il codice ricevuto per identificare il tuo gruppo.</p>
             <div class="space-y-4">
-                <input type="text" id="userIdInput" placeholder="Codice Utente / Gruppo"
-                       class="w-full p-3 border-2 border-orange-300 rounded-lg focus:ring-orange-500 focus:border-orange-500 text-lg uppercase tracking-wider"
-                       maxlength="10" onkeyup="if(event.key === 'Enter') saveUserId()">
+                <input type="text" id="userIdInput" placeholder="Codice Gruppo"
+                        class="w-full p-3 border-2 border-orange-300 rounded-lg focus:ring-orange-500 focus:border-orange-500 text-lg uppercase tracking-wider"
+                        maxlength="10" onkeyup="if(event.key === 'Enter') checkUserId()">
                 
-                <button onclick="saveUserId()"
+                <button onclick="checkUserId()"
                         class="w-full bg-orange-600 hover:bg-orange-700 text-white font-semibold py-3 rounded-lg shadow-lg transition duration-200 ease-in-out transform hover:scale-[1.01]">
-                    Accedi e Avvia il Gioco
+                    Verifica Gruppo
+                </button>
+            </div>
+            <p id="errorMsgUser" class="text-center text-red-500 hidden mt-2"></p>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- FASE 2: INSERIMENTO NOME PERSONALE -->
+        <!-- ============================================== -->
+        <div id="nameInputView" class="space-y-6 hidden">
+            <p id="namePrompt" class="text-center text-gray-500 mb-6">Perfetto! Ora, inserisci il tuo nome per personalizzare l'esperienza.</p>
+            <div class="space-y-4">
+                <input type="text" id="nameInput" placeholder="Il tuo nome o nickname"
+                        class="w-full p-3 border-2 border-green-300 rounded-lg focus:ring-green-500 focus:border-green-500 text-lg tracking-wider"
+                        maxlength="50" onkeyup="if(event.key === 'Enter') saveUserName()">
+                
+                <button onclick="saveUserName()"
+                        class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg shadow-lg transition duration-200 ease-in-out transform hover:scale-[1.01]">
+                    Conferma e Inizia
                 </button>
             </div>
         </div>
 
         <!-- ============================================== -->
-        <!-- FASE 2: INSERIMENTO CODICI DI GIOCO -->
+        <!-- FASE 3: INSERIMENTO CODICI DI GIOCO -->
         <!-- ============================================== -->
         <div id="gameCodeView" class="space-y-6 hidden">
-            <p id="welcomeMessage" class="text-center text-green-600 font-semibold text-lg mb-4">Benvenuto!</p>
-            <p class="text-center text-gray-500">Inserisci il codice di gioco trovato. La tua chiave è personale.</p>
+            <!-- Testo AGGIORNATO: rimosso l'accenno al Gruppo -->
+            <p id="welcomeMessage" class="text-center text-green-600 font-semibold text-xl mb-4">Benvenuto!</p>
+            <p class="text-center text-gray-500">Inserisci il codice di gioco che hai trovato.</p>
 
             <div class="space-y-4">
-                <input type="text" id="codeInput" placeholder="Codice di Gioco (es. 001, LUCE)"
-                       class="w-full p-3 border-2 border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 text-lg uppercase tracking-wider"
-                       maxlength="50" onkeyup="if(event.key === 'Enter') checkCode()">
+                <input type="text" id="codeInput" placeholder="Codice di Gioco"
+                        class="w-full p-3 border-2 border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 text-lg uppercase tracking-wider"
+                        maxlength="50" onkeyup="if(event.key === 'Enter') checkCode()">
                 
                 <button onclick="checkCode()"
                         class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg shadow-lg transition duration-200 ease-in-out transform hover:scale-[1.01]">
                     Controlla Codice
                 </button>
             </div>
+            
+            <!-- Area di Feedback Soggetto (Nuovo/Duplicato) -->
+            <div id="subjectFeedbackBox" class="mt-4 p-3 rounded-xl border-2 border-indigo-200 bg-indigo-50 flex items-center justify-center text-center hidden">
+                <p id="subjectFeedbackMessage" class="text-indigo-700 font-semibold text-base italic">Soggetto: N/A</p>
+            </div>
 
-            <!-- Area dei Risultati/Messaggio -->
-            <div id="resultBox" class="mt-8 p-4 md:p-6 rounded-xl border border-dashed border-gray-300 flex items-center justify-center text-center">
+            <!-- Area dei Risultati/Messaggio (Contenuto del Codice) -->
+            <div id="resultBox" class="mt-4 p-4 md:p-6 rounded-xl border border-dashed border-gray-300 flex items-center justify-center text-center">
                 <p id="resultMessage" class="text-gray-500 italic text-base md:text-lg">Il risultato apparirà qui dopo aver inserito un codice.</p>
+            </div>
+
+            <!-- Lista dei Soggetti Trovati (Registro) -->
+            <div id="submittedCodesList" class="mt-4 p-3 bg-gray-100 rounded-lg border border-gray-300">
+                <p class="font-semibold text-gray-700 mb-1 text-sm">Registro Soggetti Sbloccati:</p>
+                <!-- ATTENZIONE: Gli elementi in questa lista sono ora cliccabili -->
+                <div id="codeListContent" class="text-sm text-gray-600 italic">Nessun soggetto ancora sbloccato.</div>
             </div>
             
             <!-- Pulsante di cambio utente (per resettare) -->
@@ -79,91 +124,191 @@
             </button>
         </div>
 
-        <!-- Sezione per la Logica di Gioco e i Codici -->
-        <div id="game-logic" class="mt-8 p-4 bg-gray-100 rounded-lg text-sm text-gray-600">
-            <p class="font-semibold mb-2">Configurazione:</p>
-            <p>I codici sono cercati come: <code>[CodiceUtente]-[CodiceGioco]</code>. Modifica la sezione <code>CODE_MAP</code> nel JavaScript.</p>
-        </div>
     </div>
 
     <script>
         // ------------------------------------------------------------------------------------------------
-        // LOGICA PRINCIPALE E MAPPA DEI CODICI
+        // VARIABILI GLOBALI E COSTANTI
         // ------------------------------------------------------------------------------------------------
 
-        // Variabile globale che conterrà il prefisso utente corrente (es. "A" o "U")
         let currentUserPrefix = null;
+        let currentUserName = null;
         const USER_PREFIX_KEY = 'gameUserPrefix';
+        const USER_NAME_KEY = 'gameUserName';
+        const SUBMITTED_CODES_KEY = 'submittedCodes'; 
+        
+        // I prefissi validi che l'utente può inserire 
+        const VALID_PREFIXES = ["UTENTE1", "UTENTE2"]; 
 
-        // La TABELLA DEI CODICI E MESSAGGI è definita come un oggetto JavaScript.
-        // STRUTTURA: "CODICEUTENTE-CODICEGIOCO" : "MESSAGGIO PERSONALIZZATO"
-        // Esempi: "A-001" è per Utente A, Codice 001
-        //         "U-001" è per Utente U, Codice 001
-        // MODIFICA QUESTA SEZIONE PER AGGIORNARE I TUOI CODICI DI GIOCO PERSONALIZZATI.
+        // TABELLA DEI CODICI - Messaggi puliti
         const CODE_MAP = {
-            // ESEMPI PER L'UTENTE "A"
-            "A-001": "Gruppo A: Hai sbloccato la cassetta del tesoro. L'indizio è sul pavimento.",
-            "A-LUCE": "Gruppo A: OK, il prossimo passo è trovare il libro rosso nell'angolo.",
-            
-            // ESEMPI PER L'UTENTE "U"
-            "U-001": "Gruppo U: Ottimo! L'indizio è dietro il quadro più grande appeso al muro.",
-            "U-LUCE": "Gruppo U: Avanti! La parola chiave successiva è la capitale dell'Italia.",
+            // ESEMPI PER L'UTENTE "UTENTE1"
+            "UTENTE1-001": { subject: "LUNA", message: "Bella la luna. L'atmosfera è quieta." },
+            "UTENTE1-LUCE": { subject: "SOLE", message: "Una luce accecante ha rivelato il messaggio. Ora siete più vicini alla soluzione." },
+            "UTENTE1-CHIAVE": { subject: "CHIAVE", message: "Cosa aprirà? Un oggetto metallico è scivolato a terra con un tintinnio." },
 
-            // ESEMPI PER CODICI NON DIPENDENTI DALL'UTENTE (senza prefisso)
-            "FINALE": "Complimenti a tutti! Avete completato l'Escape Game!",
+            // ESEMPI PER L'UTENTE "UTENTE2"
+            "UTENTE2-001": { subject: "LUNA", message: "La luna mi spaventa. Sembra troppo vicina." },
+            "UTENTE2-LUCE": { subject: "OMBRA", message: "L'ombra si ritira, rivelando un numero nascosto. Il percorso è chiaro." },
+            "UTENTE2-CHIAVE": { subject: "CHIAVE", message: "Potrebbe essere la chiave che stavi cercando. Fa un click promettente." },
+
+            // ESEMPI PER CODICI NON DIPENDENTI DALL'UTENTE (generici)
+            "FINALE": { subject: "FINALE", message: "Complimenti a tutti! Avete completato l'Escape Game! Un'ottima performance." },
         };
 
         // Riferimenti agli elementi HTML
         const userIdInput = document.getElementById('userIdInput');
+        const nameInput = document.getElementById('nameInput');
         const codeInput = document.getElementById('codeInput');
         const resultMessage = document.getElementById('resultMessage');
         const resultBox = document.getElementById('resultBox');
         const userIdView = document.getElementById('userIdView');
+        const nameInputView = document.getElementById('nameInputView');
         const gameCodeView = document.getElementById('gameCodeView');
         const welcomeMessage = document.getElementById('welcomeMessage');
-
+        const errorMsgUser = document.getElementById('errorMsgUser');
+        const codeListContent = document.getElementById('codeListContent');
+        const namePrompt = document.getElementById('namePrompt');
+        const subjectFeedbackBox = document.getElementById('subjectFeedbackBox');
+        const subjectFeedbackMessage = document.getElementById('subjectFeedbackMessage');
 
         // Funzione eseguita al caricamento della pagina
         window.onload = function() {
-            loadUserId();
+            loadUser();
         };
 
         // ----------------------------------------------------------------
-        // GESTIONE UTENTE
+        // GESTIONE DEI CODICI SALVATI E DISPLAY DEI SOGGETTI
         // ----------------------------------------------------------------
 
-        // Carica il prefisso utente salvato in localStorage
-        function loadUserId() {
+        function getSubmittedCodes() {
+            const codesJson = localStorage.getItem(SUBMITTED_CODES_KEY);
+            return codesJson ? JSON.parse(codesJson) : [];
+        }
+
+        function setSubmittedCodes(codes) {
+            localStorage.setItem(SUBMITTED_CODES_KEY, JSON.stringify(codes));
+        }
+
+        // Aggiunge un codice alla lista se non è già presente
+        function addSubmittedCode(code) {
+            let codes = getSubmittedCodes();
+            if (!codes.includes(code)) {
+                codes.push(code);
+                setSubmittedCodes(codes);
+                updateSubmittedCodesDisplay(codes); // Aggiorna la visualizzazione
+                return true; // Codice NUOVO
+            }
+            return false; // Codice DUPLICATO
+        }
+
+        // AGGIORNATO: Rende i soggetti cliccabili (torna al codice grezzo)
+        function updateSubmittedCodesDisplay(codes = null) {
+            codes = codes || getSubmittedCodes();
+
+            if (codes.length === 0) {
+                codeListContent.textContent = "Nessun soggetto ancora sbloccato.";
+            } else {
+                let listHtml = '';
+                codes.forEach(rawCode => {
+                    const searchKey = `${currentUserPrefix}-${rawCode}`;
+                    // Cerca il soggetto con chiave personalizzata o generica
+                    let codeInfo = CODE_MAP[searchKey] || CODE_MAP[rawCode];
+                    
+                    const subject = codeInfo ? codeInfo.subject : `[Soggetto Sconosciuto]`;
+
+                    // L'elemento <li> è reso cliccabile e chiama reSubmitCode con il codice grezzo (rawCode)
+                    listHtml += `
+                        <li class="clickable-subject" 
+                            onclick="reSubmitCode('${rawCode}')">
+                            ${subject}
+                        </li>
+                    `;
+                });
+                
+                codeListContent.innerHTML = `<ul class="list-disc pl-5 mt-1">${listHtml}</ul>`;
+            }
+        }
+        
+        // NUOVA FUNZIONE: Simula l'inserimento del codice cliccato dal registro
+        window.reSubmitCode = function(rawCode) {
+            // Imposta e immediatamente esegue la verifica, poi pulisce l'input
+            codeInput.value = rawCode; 
+            checkCode();
+            // Pulisco subito l'input, ma la funzione checkCode lo fa già, questo è un rinforzo
+            codeInput.value = ''; 
+        }
+
+        // ----------------------------------------------------------------
+        // GESTIONE AUTENTICAZIONE E SALVATAGGIO (FASE 1 & 2)
+        // ----------------------------------------------------------------
+
+        function loadUser() {
             const savedPrefix = localStorage.getItem(USER_PREFIX_KEY);
-            if (savedPrefix) {
+            const savedName = localStorage.getItem(USER_NAME_KEY);
+            
+            if (savedPrefix && savedName) {
                 currentUserPrefix = savedPrefix;
-                showGameView(savedPrefix);
+                currentUserName = savedName;
+                showGameView(savedName);
+            } else if (savedPrefix) {
+                currentUserPrefix = savedPrefix;
+                showNameInputView();
             } else {
                 showUserIdView();
             }
         }
 
-        // Salva il prefisso utente inserito
-        function saveUserId() {
+        // Verifica l'ID del Gruppo (FASE 1)
+        window.checkUserId = function() {
             let inputPrefix = userIdInput.value.trim().toUpperCase();
 
             if (inputPrefix.length < 1) {
-                alertUser("Per favore, inserisci un codice utente valido.");
+                displayError(errorMsgUser, "Inserisci il codice del tuo gruppo.");
                 return;
             }
 
-            // Pulizia del prefisso
-            inputPrefix = inputPrefix.replace(/[^A-Z0-9]/g, ''); // Rimuove caratteri non alfanumerici
+            inputPrefix = inputPrefix.replace(/[^A-Z0-9]/g, '');
 
-            localStorage.setItem(USER_PREFIX_KEY, inputPrefix);
-            currentUserPrefix = inputPrefix;
-            showGameView(inputPrefix);
+            if (VALID_PREFIXES.includes(inputPrefix)) {
+                localStorage.setItem(USER_PREFIX_KEY, inputPrefix);
+                currentUserPrefix = inputPrefix;
+                displayError(errorMsgUser, "", true); 
+                localStorage.removeItem(SUBMITTED_CODES_KEY); 
+                updateSubmittedCodesDisplay([]);
+                
+                // Aggiorna il testo per la fase successiva
+                namePrompt.textContent = `Identificazione completata. Procedi inserendo il tuo nome.`;
+                showNameInputView();
+            } else {
+                displayError(errorMsgUser, `Codice non riconosciuto. Riprova.`);
+            }
+        }
+        
+        // Salva il Nome (FASE 2)
+        window.saveUserName = function() {
+            const inputName = nameInput.value.trim();
+
+            if (inputName.length < 2) {
+                alertUser("Per favore, inserisci un nome valido.");
+                return;
+            }
+
+            localStorage.setItem(USER_NAME_KEY, inputName);
+            currentUserName = inputName;
+            showGameView(inputName);
         }
 
-        // Resetta l'utente e torna alla schermata di login
-        function resetUser() {
+        // Resetta l'utente (cancella tutto, inclusi i codici)
+        window.resetUser = function() {
             localStorage.removeItem(USER_PREFIX_KEY);
+            localStorage.removeItem(USER_NAME_KEY);
+            localStorage.removeItem(SUBMITTED_CODES_KEY);
             currentUserPrefix = null;
+            currentUserName = null;
+            updateSubmittedCodesDisplay([]);
+            displayResult("Il risultato apparirà qui dopo aver inserito un codice.", false, true); // Reset messaggio
+            displaySubjectFeedback("", false, true); // Reset feedback soggetto
             showUserIdView();
         }
 
@@ -171,88 +316,149 @@
         // CAMBIO DI VISTA
         // ----------------------------------------------------------------
 
-        function showUserIdView() {
-            userIdView.classList.remove('hidden');
+        function hideAllViews() {
+            userIdView.classList.add('hidden');
+            nameInputView.classList.add('hidden');
             gameCodeView.classList.add('hidden');
-            resultBox.classList.remove('border-green-500', 'bg-green-100', 'border-red-500', 'bg-red-100');
-            resultBox.classList.add('border-gray-300');
-            resultMessage.textContent = "Il risultato apparirà qui dopo aver inserito un codice.";
+        }
+
+        function showUserIdView() {
+            hideAllViews();
+            userIdView.classList.remove('hidden');
+            userIdInput.value = "";
             userIdInput.focus();
         }
 
-        function showGameView(prefix) {
-            welcomeMessage.textContent = `Benvenuto, Utente ${prefix}!`;
-            userIdView.classList.add('hidden');
+        function showNameInputView() {
+            hideAllViews();
+            nameInputView.classList.remove('hidden');
+            nameInput.value = "";
+            nameInput.focus();
+        }
+
+        function showGameView(name) {
+            hideAllViews();
+            // Messaggio di benvenuto pulito
+            welcomeMessage.textContent = `Benvenuto, ${name}!`; 
             gameCodeView.classList.remove('hidden');
             codeInput.focus();
+            updateSubmittedCodesDisplay(); 
         }
 
 
         // ----------------------------------------------------------------
-        // GESTIONE CODICI DI GIOCO
+        // GESTIONE RISULTATI E FEEDBACK
         // ----------------------------------------------------------------
+        
+        function displayError(element, message, hide = false) {
+            if (hide || message === "") {
+                element.classList.add('hidden');
+            } else {
+                element.textContent = message;
+                element.classList.remove('hidden');
+            }
+        }
 
         // Funzione per mostrare il messaggio di risultato (successo o errore)
-        function displayResult(message, isSuccess = true) {
-            resultMessage.textContent = message;
+        function displayResult(message, isSuccess = true, isReset = false) {
+            resultBox.classList.remove('border-gray-300', 'border-red-500', 'bg-red-100', 'border-green-500', 'bg-green-100', 'border-yellow-500', 'bg-yellow-100');
+            resultMessage.classList.remove('text-gray-500', 'text-red-700', 'italic', 'text-green-800', 'font-semibold', 'text-yellow-800');
             
-            // Aggiorno gli stili per indicare successo o fallimento
-            resultBox.classList.remove('border-gray-300', 'border-red-500', 'bg-red-100', 'border-green-500', 'bg-green-100');
-            
-            if (isSuccess) {
-                // Stili per Successo (verde)
+            if (isReset) {
+                 resultBox.classList.add('border-gray-300');
+                 resultMessage.textContent = message;
+                 resultMessage.classList.add('text-gray-500', 'italic');
+            } else if (isSuccess) {
+                // Successo (NUOVO CODICE o RIPETIZIONE)
                 resultBox.classList.add('border-green-500', 'bg-green-100');
-                resultMessage.classList.remove('text-gray-500', 'text-red-700', 'italic');
+                resultMessage.textContent = message;
                 resultMessage.classList.add('text-green-800', 'font-semibold');
             } else {
-                // Stili per Errore (rosso)
+                // Errore (Codice NON valido)
                 resultBox.classList.add('border-red-500', 'bg-red-100');
-                resultMessage.classList.remove('text-gray-500', 'text-green-800', 'font-semibold');
+                resultMessage.textContent = message;
                 resultMessage.classList.add('text-red-700');
             }
         }
+
+        // Funzione per mostrare il feedback del soggetto (Nuovo/Duplicato/Errore)
+        function displaySubjectFeedback(message, isNewSubject = true, isReset = false) {
+            subjectFeedbackBox.classList.remove('hidden', 'border-red-400', 'bg-red-50', 'border-indigo-400', 'bg-indigo-100', 'border-gray-300', 'bg-gray-100');
+            subjectFeedbackMessage.classList.remove('text-indigo-800', 'text-red-700', 'text-gray-700');
+            
+            if (isReset) {
+                 subjectFeedbackBox.classList.add('hidden');
+                 return;
+            } else if (isNewSubject) {
+                // Nuovo Soggetto (Feedback Positivo)
+                subjectFeedbackBox.classList.add('border-indigo-400', 'bg-indigo-100');
+                subjectFeedbackMessage.textContent = message;
+                subjectFeedbackMessage.classList.add('text-indigo-800', 'font-semibold');
+            } else {
+                // Soggetto Già Noto o Errore (Feedback Neutro/Avviso)
+                subjectFeedbackBox.classList.add('border-gray-300', 'bg-gray-100');
+                subjectFeedbackMessage.textContent = message;
+                subjectFeedbackMessage.classList.add('text-gray-700');
+            }
+            subjectFeedbackBox.classList.remove('hidden');
+        }
         
-        // Funzione alternativa ad alert(), dato che non possiamo usarla.
         function alertUser(message) {
-            alert(message); // Nota: in un ambiente Canvas reale useresti un modale custom
             console.error("ERRORE UTENTE:", message); 
+            displayResult(message, false);
+            displaySubjectFeedback("Errore durante l'operazione.", false);
         }
 
         // Funzione principale di controllo del codice
-        function checkCode() {
-            if (!currentUserPrefix) {
-                // Questo non dovrebbe succedere, ma è un'ottima safety check
-                displayResult("ERRORE: Riavvia l'app e inserisci il codice utente.", false);
+        window.checkCode = function() {
+            if (!currentUserPrefix || !currentUserName) {
+                alertUser("ERRORE: I dati utente sono incompleti. Riavvia l'app e rifai l'accesso.");
+                resetUser();
                 return;
             }
 
-            // Ottengo l'input del codice di gioco e lo normalizzo (maiuscolo e senza spazi)
             const inputGameCode = codeInput.value.trim().toUpperCase();
-
-            // Svuoto il campo input dopo l'invio
+            // Pulisce l'input dopo l'uso, indipendentemente dalla fonte
             codeInput.value = '';
 
             if (inputGameCode === "") {
                 displayResult("Per favore, inserisci un codice di gioco.", false);
+                displaySubjectFeedback("", false, true);
                 return;
             }
-
-            // Costruisco la chiave di ricerca: [PREFISSO UTENTE]-[CODICE GIOCO]
+            
+            let resultData = null; // Sarà l'oggetto { subject, message }
+            let foundKey = null;
             const searchKey = `${currentUserPrefix}-${inputGameCode}`;
 
-            // 1. Eseguo la ricerca con la chiave personalizzata
+            // 1. Eseguo la ricerca con la chiave personalizzata o generica
             if (CODE_MAP.hasOwnProperty(searchKey)) {
-                const resultText = CODE_MAP[searchKey];
-                displayResult(`Codice Accettato per ${currentUserPrefix}! Indizio:\n\n${resultText}`, true);
-            
-            // 2. Se non la trovo, provo a cercare se esiste un codice "generico" (senza prefisso)
+                resultData = CODE_MAP[searchKey];
+                foundKey = inputGameCode;
             } else if (CODE_MAP.hasOwnProperty(inputGameCode)) {
-                const resultText = CODE_MAP[inputGameCode];
-                displayResult(`Codice Generico Accettato! Indizio:\n\n${resultText}`, true);
-
-            // 3. Codice NON trovato
+                resultData = CODE_MAP[inputGameCode];
+                foundKey = inputGameCode;
             } else {
+                // Codice NON trovato
                 displayResult(`"${inputGameCode}" non è un codice valido in questo momento. Riprova!`, false);
+                displaySubjectFeedback("", false, true); // Nascondi il box feedback soggetto
+                return; 
+            }
+
+            // ------------------------------------------------------------
+            // LOGICA DI CONTROLLO DUPLICATO E FEEDBACK SOGGETTO
+            // ------------------------------------------------------------
+            
+            const isNew = addSubmittedCode(foundKey); // Tenta di aggiungere il codice e verifica se è nuovo
+            
+            if (isNew) {
+                // Codice NUOVO trovato
+                displayResult(resultData.message, true);
+                displaySubjectFeedback(`Nuovo soggetto sbloccato: ${resultData.subject}`, true);
+            } else {
+                // AGGIORNATO: Codice DUPLICATO - RIPETI il messaggio e indica che è già noto
+                displayResult(resultData.message, true); // Ripete il messaggio con lo stile di successo (verde)
+                displaySubjectFeedback(`Soggetto: ${resultData.subject} (già noto)`, false); // Usa stile neutro/grigio
             }
         }
     </script>
