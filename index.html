@@ -20,8 +20,8 @@
             transition: all 0.3s ease;
         }
         #subjectFeedbackBox {
-             min-height: 50px;
-             transition: all 0.3s ease;
+            min-height: 50px;
+            transition: all 0.3s ease;
         }
         /* Stile per i soggetti cliccabili */
         .clickable-subject {
@@ -31,6 +31,15 @@
         .clickable-subject:hover {
             color: #2563EB; /* Blu intenso */
             font-weight: 600;
+        }
+        /* Stili specifici per la nuova variabile "tipo" */
+        .tipo-OGGETTO {
+            font-weight: 700;
+            color: #f59e0b; /* Giallo (Amber) per OGGETTO */
+        }
+        .tipo-RICORDO {
+            font-weight: 700;
+            color: #10b981; /* Verde (Emerald) per RICORDO */
         }
         /* Aggiungo un focus state personalizzato al pulsante */
         button:focus {
@@ -142,46 +151,52 @@
         // I prefissi validi che l'utente può inserire (Nascosti dall'interfaccia)
         const VALID_PREFIXES = ["UTENTE1", "UTENTE2", "UTENTE3"]; 
 
-        // TABELLA DEI CODICI - Messaggi puliti
+        // TABELLA DEI CODICI - Aggiornata con la variabile 'type'
         const CODE_MAP = {
-            // ESEMPI PER L'UTENTE "UTENTE1" (Analitico/Stoico)
-            "UTENTE1-001": { subject: "OROLOGIO", message: "Il tempo di attività è critico. La sequenza ha inizio: ora." },
-            "UTENTE1-002": { subject: "ENERGIA", message: "Potenza insufficiente. Ristabilire il flusso agli ingranaggi secondari." },
-            "UTENTE1-003": { subject: "MAPPA", message: "Coordinate acquisite. La destinazione è a est, oltre il punto X." },
-            "UTENTE1-004": { subject: "CHIMICA", message: "Reazione completata con successo. Il composto è stabile e pronto all'uso." },
-            "UTENTE1-005": { subject: "ARCHIVIO", message: "Documento 'Project Phoenix' scaricato. Analisi dei dati in corso." },
-            "UTENTE1-006": { subject: "COMETA", message: "Anomalia rilevata. Un corpo celeste si avvicina alla nostra orbita." },
-            "UTENTE1-007": { subject: "CRIPTA", message: "Decrittazione completata. Il codice di accesso è stato svelato." },
-            "UTENTE1-008": { subject: "FOTO", message: "Immagine acquisita. Il soggetto è identificato con alta probabilità." },
-            "UTENTE1-009": { subject: "FLUIDO", message: "Il sistema idraulico è pressurizzato. Aprire la valvola lentamente." },
-            "UTENTE1-010": { subject: "PORTALE", message: "Attivazione completata. La transizione dimensionale è imminente." },
+            // Struttura: { subject: "NOME", message: "MESSAGGIO", type: "TIPO" }
 
-            // ESEMPI PER L'UTENTE "UTENTE2" (Misterioso/Poetico)
-            "UTENTE2-001": { subject: "CLESSIDRA", message: "Ogni granello di sabbia è un sussurro del passato. Ascolta il ticchettio nascosto." },
-            "UTENTE2-002": { subject: "SCINTILLA", message: "L'elettricità è la forza vitale, la chiave per risvegliare l'antica macchina." },
-            "UTENTE2-003": { subject: "LABIRINTO", message: "Ogni svolta ti allontana dalla verità. Devi fidarti del tuo istinto, non della vista." },
-            "UTENTE2-004": { subject: "ALCHIMIA", message: "La fusione degli elementi rivela la formula segreta per la trasformazione." },
-            "UTENTE2-005": { subject: "PERGAMENA", message: "I segreti sono celati nelle fibre antiche. La verità è scritta in un linguaggio dimenticato." },
-            "UTENTE2-006": { subject: "COSTELAZIONE", message: "Guarda in alto. Le stelle formano un disegno, una guida tracciata dal destino." },
-            "UTENTE2-007": { subject: "ENIGMA", message: "Ciò che è chiuso può essere aperto solo dalla logica e dalla paura. Risolvi l'indovinello." },
-            "UTENTE2-008": { subject: "RIFLESSO", message: "L'immagine che vedi non è te. Guarda oltre il vetro per la vera forma." },
-            "UTENTE2-009": { subject: "LACRIMA", message: "Solo le acque purificate possono scorrere. Il pianto della sorgente è la tua cura." },
-            "UTENTE2-010": { subject: "SOGLIA", message: "Non è la fine, ma un nuovo inizio. Attraversa il velo dell'ignoto." },
+            // OGGETTI (Codici X-001 a X-003)
+            "UTENTE1-001": { subject: "OROLOGIO", message: "Il tempo di attività è critico. La sequenza ha inizio: ora.", type: "OGGETTO" },
+            "UTENTE1-002": { subject: "ENERGIA", message: "Potenza insufficiente. Ristabilire il flusso agli ingranaggi secondari.", type: "OGGETTO" },
+            "UTENTE1-003": { subject: "MAPPA", message: "Coordinate acquisite. La destinazione è a est, oltre il punto X.", type: "OGGETTO" },
+            // RICORDI (Codici rimanenti)
+            "UTENTE1-004": { subject: "CHIMICA", message: "Reazione completata con successo. Il composto è stabile e pronto all'uso.", type: "RICORDO" },
+            "UTENTE1-005": { subject: "ARCHIVIO", message: "Documento 'Project Phoenix' scaricato. Analisi dei dati in corso.", type: "RICORDO" },
+            "UTENTE1-006": { subject: "COMETA", message: "Anomalia rilevata. Un corpo celeste si avvicina alla nostra orbita.", type: "RICORDO" },
+            "UTENTE1-007": { subject: "CRIPTA", message: "Decrittazione completata. Il codice di accesso è stato svelato.", type: "RICORDO" },
+            "UTENTE1-008": { subject: "FOTO", message: "Immagine acquisita. Il soggetto è identificato con alta probabilità.", type: "RICORDO" },
+            "UTENTE1-009": { subject: "FLUIDO", message: "Il sistema idraulico è pressurizzato. Aprire la valvola lentamente.", type: "RICORDO" },
+            "UTENTE1-010": { subject: "PORTALE", message: "Attivazione completata. La transizione dimensionale è imminente.", type: "RICORDO" },
+
+            // OGGETTI (Codici X-001 a X-003)
+            "UTENTE2-001": { subject: "CLESSIDRA", message: "Ogni granello di sabbia è un sussurro del passato. Ascolta il ticchettio nascosto.", type: "OGGETTO" },
+            "UTENTE2-002": { subject: "SCINTILLA", message: "L'elettricità è la forza vitale, la chiave per risvegliare l'antica macchina.", type: "OGGETTO" },
+            "UTENTE2-003": { subject: "LABIRINTO", message: "Ogni svolta ti allontana dalla verità. Devi fidarti del tuo istinto, non della vista.", type: "OGGETTO" },
+            // RICORDI (Codici rimanenti)
+            "UTENTE2-004": { subject: "ALCHIMIA", message: "La fusione degli elementi rivela la formula segreta per la trasformazione.", type: "RICORDO" },
+            "UTENTE2-005": { subject: "PERGAMENA", message: "I segreti sono celati nelle fibre antiche. La verità è scritta in un linguaggio dimenticato.", type: "RICORDO" },
+            "UTENTE2-006": { subject: "COSTELAZIONE", message: "Guarda in alto. Le stelle formano un disegno, una guida tracciata dal destino.", type: "RICORDO" },
+            "UTENTE2-007": { subject: "ENIGMA", message: "Ciò che è chiuso può essere aperto solo dalla logica e dalla paura. Risolvi l'indovinello.", type: "RICORDO" },
+            "UTENTE2-008": { subject: "RIFLESSO", message: "L'immagine che vedi non è te. Guarda oltre il vetro per la vera forma.", type: "RICORDO" },
+            "UTENTE2-009": { subject: "LACRIMA", message: "Solo le acque purificate possono scorrere. Il pianto della sorgente è la tua cura.", type: "RICORDO" },
+            "UTENTE2-010": { subject: "SOGLIA", message: "Non è la fine, ma un nuovo inizio. Attraversa il velo dell'ignoto.", type: "RICORDO" },
             
-            // ESEMPI PER L'UTENTE "UTENTE3" (Pratico/Urgente)
-            "UTENTE3-001": { subject: "TIMER", message: "Priorità 1: Punti di controllo. Mancano 60 secondi all'attivazione." },
-            "UTENTE3-002": { subject: "BATTERIA", message: "Alimenta la tua risorsa più vicina. L'indicatore è rosso." },
-            "UTENTE3-003": { subject: "PERCORSO", message: "Deviazione necessaria. Segui la linea rossa sul pavimento. Non fermarti." },
-            "UTENTE3-004": { subject: "MISCELA", message: "Combinare i liquidi A e C. Il risultato deve essere verde brillante." },
-            "UTENTE3-005": { subject: "FASCICOLO", message: "Accesso al livello 3 ottenuto. Il file protetto è stato aperto." },
-            "UTENTE3-006": { subject: "SATELLITE", message: "Connessione persa. Ricalibrare l'antenna parabolica verso il nord." },
-            "UTENTE3-007": { subject: "BLOCCO", message: "Sistema di sicurezza attivato. Inserisci la sequenza numerica per disarmare il lucchetto." },
-            "UTENTE3-008": { subject: "MONITOR", message: "Trasmissione video in arrivo. Concentrati sul dettaglio nell'angolo in alto a destra." },
-            "UTENTE3-009": { subject: "TUBO", message: "C'è una perdita critica nel condotto principale. Ispeziona la giunzione." },
-            "UTENTE3-010": { subject: "USCITA", message: "Hai raggiunto il punto di estrazione. Procedi con cautela. La missione è quasi terminata." },
+            // OGGETTI (Codici X-001 a X-003)
+            "UTENTE3-001": { subject: "TIMER", message: "Priorità 1: Punti di controllo. Mancano 60 secondi all'attivazione.", type: "OGGETTO" },
+            "UTENTE3-002": { subject: "BATTERIA", message: "Alimenta la tua risorsa più vicina. L'indicatore è rosso.", type: "OGGETTO" },
+            "UTENTE3-003": { subject: "PERCORSO", message: "Deviazione necessaria. Segui la linea rossa sul pavimento. Non fermarti.", type: "OGGETTO" },
+            // RICORDI (Codici rimanenti)
+            "UTENTE3-004": { subject: "MISCELA", message: "Combinare i liquidi A e C. Il risultato deve essere verde brillante.", type: "RICORDO" },
+            "UTENTE3-005": { subject: "FASCICOLO", message: "Accesso al livello 3 ottenuto. Il file protetto è stato aperto.", type: "RICORDO" },
+            "UTENTE3-006": { subject: "SATELLITE", message: "Connessione persa. Ricalibrare l'antenna parabolica verso il nord.", type: "RICORDO" },
+            "UTENTE3-007": { subject: "BLOCCO", message: "Sistema di sicurezza attivato. Inserisci la sequenza numerica per disarmare il lucchetto.", type: "RICORDO" },
+            "UTENTE3-008": { subject: "MONITOR", message: "Trasmissione video in arrivo. Concentrati sul dettaglio nell'angolo in alto a destra.", type: "RICORDO" },
+            "UTENTE3-009": { subject: "TUBO", message: "C'è una perdita critica nel condotto principale. Ispeziona la giunzione.", type: "RICORDO" },
+            "UTENTE3-010": { subject: "USCITA", message: "Hai raggiunto il punto di estrazione. Procedi con cautela. La missione è quasi terminata.", type: "RICORDO" },
 
             // ESEMPI PER CODICI NON DIPENDENTI DALL'UTENTE (generici)
-            "FINALE": { subject: "COMPLETATO", message: "Complimenti a tutti! Avete completato l'Escape Game! Un'ottima performance. Il viaggio si conclude qui." },
+            // Assumo che il codice generico sia RICORDO, a meno che non sia specificato diversamente.
+            "FINALE": { subject: "COMPLETATO", message: "Complimenti a tutti! Avete completato l'Escape Game! Un'ottima performance. Il viaggio si conclude qui.", type: "RICORDO" },
         };
 
         // Riferimenti agli elementi HTML
@@ -230,7 +245,7 @@
             return false; // Codice DUPLICATO
         }
 
-        // Rende i soggetti cliccabili (torna al codice grezzo)
+        // AGGIORNATA: Aggiunge la visualizzazione del 'tipo' (OGGETTO/RICORDO)
         function updateSubmittedCodesDisplay(codes = null) {
             codes = codes || getSubmittedCodes();
 
@@ -244,13 +259,16 @@
                     let codeInfo = CODE_MAP[searchKey] || CODE_MAP[rawCode];
                     
                     const subject = codeInfo ? codeInfo.subject : `[Soggetto Sconosciuto]`;
+                    const type = codeInfo ? codeInfo.type : `[TIPO SCONOSCIUTO]`; // Prende il tipo
+                    
+                    // Crea l'elemento con il prefisso di tipo
+                    const prefixedSubject = `<span class="tipo-${type}">${type}</span>: ${subject}`;
 
                     // L'elemento <li> è reso cliccabile e chiama reSubmitCode con il codice grezzo (rawCode)
-                    // Il codice mostrato nella lista è solo il SOGGETTO, per non rivelare il messaggio a meno che non venga cliccato
                     listHtml += `
                         <li class="clickable-subject" 
                             onclick="reSubmitCode('${rawCode}')">
-                            ${subject}
+                            ${prefixedSubject}
                         </li>
                     `;
                 });
@@ -393,9 +411,9 @@
             resultMessage.classList.remove('text-gray-500', 'text-red-700', 'italic', 'text-green-800', 'font-semibold', 'text-yellow-800');
             
             if (isReset) {
-                 resultBox.classList.add('border-gray-300');
-                 resultMessage.textContent = message;
-                 resultMessage.classList.add('text-gray-500', 'italic');
+                resultBox.classList.add('border-gray-300');
+                resultMessage.textContent = message;
+                resultMessage.classList.add('text-gray-500', 'italic');
             } else if (isSuccess) {
                 // Successo (NUOVO CODICE o RIPETIZIONE)
                 resultBox.classList.add('border-green-500', 'bg-green-100');
@@ -415,15 +433,15 @@
             subjectFeedbackMessage.classList.remove('text-indigo-800', 'text-red-700', 'text-gray-700');
             
             if (isReset) {
-                 subjectFeedbackBox.classList.add('hidden');
-                 return;
+                subjectFeedbackBox.classList.add('hidden');
+                return;
             } else if (isNewSubject) {
                 // Nuovo Soggetto (Feedback Positivo)
                 subjectFeedbackBox.classList.add('border-indigo-400', 'bg-indigo-100');
                 subjectFeedbackMessage.textContent = message;
                 subjectFeedbackMessage.classList.add('text-indigo-800', 'font-semibold');
             } else {
-                // Soggetto Già Noto (Feedback Neutro/Avviso) - MODIFICATO QUI
+                // Soggetto Già Noto (Feedback Neutro/Avviso)
                 subjectFeedbackBox.classList.add('border-gray-300', 'bg-gray-100');
                 subjectFeedbackMessage.textContent = message;
                 subjectFeedbackMessage.classList.add('text-gray-700');
@@ -455,7 +473,7 @@
                 return;
             }
             
-            let resultData = null; // Sarà l'oggetto { subject, message }
+            let resultData = null; // Sarà l'oggetto { subject, message, type }
             let foundKey = null;
             const searchKey = `${currentUserPrefix}-${inputGameCode}`;
 
@@ -482,12 +500,13 @@
             if (isNew) {
                 // Codice NUOVO trovato
                 displayResult(resultData.message, true);
-                displaySubjectFeedback(`Nuovo soggetto sbloccato: ${resultData.subject}`, true);
+                // Aggiorno il feedback con il TIPO
+                displaySubjectFeedback(`Nuovo ${resultData.type}: ${resultData.subject}`, true);
             } else {
                 // Codice DUPLICATO - RIPETI il messaggio e indica che è già noto
                 displayResult(resultData.message, true); // Ripete il messaggio con lo stile di successo (verde)
-                // Modificato: rimosso "Clicca per rileggere."
-                displaySubjectFeedback(`Soggetto: ${resultData.subject} (già noto).`, false); 
+                // Aggiorno il feedback con il TIPO
+                displaySubjectFeedback(`${resultData.type}: ${resultData.subject} (già noto).`, false); 
             }
         }
     </script>
