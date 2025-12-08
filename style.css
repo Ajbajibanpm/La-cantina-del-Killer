@@ -1,0 +1,136 @@
+* {margin:0; 
+  padding:0; 
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+  ;}
+
+/*---------------------------------*/
+body{background-image: url(sfondo.jpg);
+    background-size: cover; 
+    background-size: 155%;}
+.chat-box {
+    height: calc(14dvh);
+    padding: 40px 10px;
+    margin-bottom: 30px; 
+    margin-top: 5px; 
+    border-radius: 8px;
+    box-sizing: border-box;
+    box-shadow: 3px 3px 5px #000;
+    background-image: url(img-start.jpg);
+    background-position: 50% 26%;
+    background-size: 155%;}
+
+.chat-box.DETECTIVE {
+    background-image: url(img-detective.png);
+    border-image-width: 100%;
+    background-position: 48% 29%;
+background-size: 235%;}
+
+.chat-box.MEDIUM {
+    background-image: url(img-medium.png);
+    border-image-width: 100%;
+    background-position: 50% 28%;
+}
+
+.chat-box.BIMBO {
+    background-image: url(img-bimbo.png);
+    border-image-width: 100%;
+    background-position: 48% 28%;
+}
+    
+.chat-box.DOTTORE {
+    background-image: url(img-dottore.png);
+    border-image-width: 100%;
+    background-position: 50% 25.5%;}
+
+.chat-box.INFORMATIC {
+    background-image: url(img-informatico.png);
+    border-image-width: 100%;
+    background-position: 38% 25.5%;
+background-size: 155%;}
+    
+.chat-box.BUSINESS {
+    background-image: url(img-business.png);
+    border-image-width: 100%;
+    background-position: 50% 25%;}
+
+.chat-box.AGENTE {
+    background-image: url(img-007.png);
+    border-image-width: 100%;
+    background-position: 50% 24%;}
+
+.chat-box.STORICO {
+    background-image: url(img-storico.png);
+    border-image-width: 100%;
+    background-position: 50% 28%;
+background-size: 230%;}
+    
+.chat-box.PIZZA {
+    background-image: url(img-pizza.png);
+    border-image-width: 100%;
+    background-position: 50% 28%;}
+
+body{display:flex;}
+
+/* Stili originali: Sfondo predefinito */
+.chat-sotto {
+    height: calc(14dvh);
+    padding: 40px 10px;
+    margin-bottom: 5px; 
+    margin-top: 30px; 
+    border-radius: 8px;
+    box-sizing: border-box;
+    box-shadow: 3px 3px 5px #000;
+    background-image: url(img-start2.jpg);
+    background-position: 50% 58%;
+    background-size: 155%;}
+
+
+.chat-sotto.DETECTIVE {
+    background-image: url(img-detective.png);
+    border-image-width: 100%;
+    background-position: 50% 56%;
+background-size: 215%;}
+
+.chat-sotto.MEDIUM {
+    background-image: url(img-medium.png);
+    border-image-width: 100%;
+    background-position: 42% 66%;
+    background-size: 185%;
+}
+
+.chat-sotto.BIMBO {
+    background-image: url(img-bimbo.png);
+    border-image-width: 100%;
+    background-position: 50% 60%;}
+    
+.chat-sotto.DOTTORE {
+    background-image: url(img-dottore.png);
+    border-image-width: 100%;
+    background-position: 50% 84%;}
+
+.chat-sotto.INFORMATIC {
+    background-image: url(img-informatico.png);
+    border-image-width: 100%;
+    background-position: 50% 85%;}
+    
+.chat-sotto.BUSINESS {
+    background-image: url(img-business.png);
+    border-image-width: 100%;
+    background-position: 40% 56.5%;
+background-size: 165%;}
+
+.chat-sotto.AGENTE {
+    background-image: url(img-007.png);
+    border-image-width: 100%;
+    background-position: 50% 84%;}
+
+.chat-sotto.STORICO {
+    background-image: url(img-storico.png);
+    border-image-width: 100%;
+    background-position: 50% 90%;}
+    
+.chat-sotto.PIZZA {
+    background-image: url(img-pizza.png);
+    border-image-width: 100%;
+    background-position: 50% 90%;}

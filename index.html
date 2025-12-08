@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="it"> <!--lingua-->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Cantina del Killer</title>
+    <!-- Carico Tailwind CSS per uno stile moderno e responsive -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Imposto il font Inter (consigliato per l'UI) */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f7f7;
+            min-height: 100vh;
+        }
+        /* Custom styles per l'input e l'area risultati */
+        #resultBox {
+            min-height: 120px;
+            transition: all 0.3s ease;
+        }
+        #subjectFeedbackBox {
+            min-height: 50px;
+            transition: all 0.3s ease;
+        }
+        /* Stile per i soggetti cliccabili */
+        .clickable-subject {
+            cursor: pointer;
+            transition: color 0.15s ease, font-weight 0.15s ease;
+        }
+        .clickable-subject:hover {
+            color: #2563EB; /* Blu intenso */
+            font-weight: 600;
+        }
+        /* Stili specifici per la nuova variabile "tipo" */
+        .tipo-OGGETTO {
+            font-weight: 700;
+            color: #f59e0b; /* Giallo (Amber) per OGGETTO */
+        }
+        .tipo-RICORDO {
+            font-weight: 700;
+            color: #10b981; /* Verde (Emerald) per RICORDO */
+        }
+        /* Aggiungo un focus state personalizzato al pulsante */
+        button:focus {
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(66, 153, 225, 0.5); /* blu */
+        }
+        .hidden { display: none; }
+
+        /* Stili per il Modal di conferma */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 0.3s ease;
+        }
+        .modal-content {
+            background-color: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            width: 90%;
+            transform: translateY(-50px);
+            transition: transform 0.3s ease;
+        }
+    </style>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body class="p-4 flex items-center justify-center">
+    <div class="ski"><div class="chat-box"></div>
+    <div class="w-full max-w-md bg-white p-6 md:p-8 shadow-2xl rounded-xl">
+        
+        <div class="prova">
+        
+        <h1 class="text-3xl font-bold text-center text-gray-800 mb-2">ESCAPE ROOM: <br> La cantina del Killer</h1>
+        
+        <!-- ============================================== -->
+        <!-- FASE 1: INSERIMENTO CODICE GRUPPO -->
+        <!-- ============================================== -->
+        <div id="userIdView" class="space-y-6">
+            <!-- Testo di istruzione AGGIORNATO (senza suggerimenti) -->
+            <p class="text-center text-gray-500 mb-6">Inserisci il codice ricevuto per identificarti.</p>
+            <div class="space-y-4">
+                <input type="text" id="userIdInput" placeholder="Skibidiboppi"
+                        class="w-full p-3 border-2 border-orange-300 rounded-lg focus:ring-orange-500 focus:border-orange-500 text-lg uppercase tracking-wider"
+                        maxlength="10" onkeyup="if(event.key === 'Enter') checkUserId()">
+            
+                <button onclick="checkUserId()"
+                        class="w-full bg-orange-600 hover:bg-orange-700 text-white font-semibold py-3 rounded-lg shadow-lg transition duration-200 ease-in-out transform hover:scale-[1.01]">
+                    Verifica Identità
+                </button>
+            </div>
+             </div>
+            <!-- Messaggio di errore generico AGGIORNATO -->
+            <p id="errorMsgUser" class="text-center text-red-500 hidden mt-2"></p>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- FASE 2: INSERIMENTO NOME PERSONALE -->
+        <!-- ============================================== -->
+        <div id="nameInputView" class="space-y-6 hidden">
+            <p id="namePrompt" class="text-center text-gray-500 mb-6">Perfetto! Ora, inserisci il tuo nome per personalizzare l'esperienza.</p>
+            <div class="space-y-4">
+                <input type="text" id="nameInput" placeholder="Il tuo nome o nickname"
+                        class="w-full p-3 border-2 border-green-300 rounded-lg focus:ring-green-500 focus:border-green-500 text-lg tracking-wider"
+                        maxlength="50" onkeyup="if(event.key === 'Enter') saveUserName()">
+            
+                <button onclick="saveUserName()"
+                        class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg shadow-lg transition duration-200 ease-in-out transform hover:scale-[1.01]">
+                    Conferma e Inizia
+                </button>
+            </div>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- FASE 3: INSERIMENTO CODICI DI GIOCO -->
+        <!-- ============================================== -->
+        <div id="gameCodeView" class="space-y-6 hidden">
+            <!-- Messaggio di benvenuto AGGIORNATO (mostra solo il nome) -->
+            <p id="welcomeMessage" class="text-center text-green-600 font-semibold text-xl mb-4">Benvenuto!</p>
+            <!-- Testo di istruzione AGGIORNATO (senza suggerimenti) -->
+            <p class="text-center text-gray-500">Inserisci il codice di gioco che hai trovato.</p>
+
+            <div class="space-y-4">
+                <input type="text" id="codeInput" placeholder="Codice di Gioco"
+                        class="w-full p-3 border-2 border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 text-lg uppercase tracking-wider"
+                        maxlength="50" onkeyup="if(event.key === 'Enter') checkCode()">
+            
+                <button onclick="checkCode()"
+                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg shadow-lg transition duration-200 ease-in-out transform hover:scale-[1.01]">
+                    Controlla Codice
+                </button>
+
+                <!-- ****NUOVO PULSANTE DI RECAP -->
+            <button onclick="showRecapConfirmation()"
+                    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg shadow-lg transition duration-200 ease-in-out transform hover:scale-[1.01]">
+                A cosa penso?
+            </button> <!-- **** -->
+
+            </div>
+        
+            <!-- Area di Feedback Soggetto (Nuovo/Duplicato) -->
+            <div id="subjectFeedbackBox" class="mt-4 p-3 rounded-xl border-2 border-indigo-200 bg-indigo-50 flex items-center justify-center text-center hidden">
+                <p id="subjectFeedbackMessage" class="text-indigo-700 font-semibold text-base italic">Soggetto: N/A</p>
+            </div>
+
+            <!-- Area dei Risultati/Messaggio (Contenuto del Codice) -->
+            <div id="resultBox" class="mt-4 p-4 md:p-6 rounded-xl border border-dashed border-gray-300 flex items-center justify-center text-center">
+                <p id="resultMessage" class="text-gray-500 italic text-base md:text-lg">Il risultato apparirà qui dopo aver inserito un codice.</p>
+            </div>
+
+            <!-- Lista dei Soggetti Trovati (Registro) -->
+            <div id="submittedCodesList" class="mt-4 p-3 bg-gray-100 rounded-lg border border-gray-300">
+                <p class="font-semibold text-gray-700 mb-1 text-sm">Registro Soggetti Sbloccati:</p>
+                <!-- Gli elementi in questa lista sono cliccabili -->
+                <div id="codeListContent" class="text-sm text-gray-600 italic">Nessun soggetto ancora sbloccato.</div>
+            </div>
+
+            <!-- NUOVO PULSANTE DI RESET -->
+            <button onclick="showResetConfirmation()"
+                    class="w-full mt-6 bg-red-500 hover:bg-red-600 text-white font-semibold py-2 rounded-lg text-sm transition duration-200 ease-in-out">
+                Ricomincia il Gioco (Reset Totale)
+            </button>
+
+        
+        </div>
+
+    </div>
+
+    <!-- MODAL PER LA CONFERMA DEL RESET -->
+    <div id="resetModal" class="modal-overlay hidden">
+        <div class="modal-content text-center">
+            <h3 class="text-xl font-bold text-red-600 mb-3">Conferma Reset</h3>
+            <p class="text-gray-700 mb-6">Sei sicuro di voler ricominciare? Uscirai dal gioco e il tuo personaggio verrà considerato non più in vita</p>
+            <div class="flex justify-around space-x-4">
+                <button onclick="hideResetConfirmation()"
+                        class="flex-1 px-4 py-2 bg-gray-200 text-gray-800 font-semibold rounded-lg hover:bg-gray-300 transition duration-150">
+                    Annulla
+                </button>
+                <button onclick="resetUser()"
+                        class="flex-1 px-4 py-2 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 transition duration-150">
+                    Conferma Reset
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ***MODAL PER LA CONFERMA DEL RESET -->
+    <div id="recapModal" class="modal-overlay hidden">
+        <div class="modal-content text-center">
+            <h3 class="text-xl font-bold text-red-600 mb-3">Conferma Recap</h3>
+            <p class="text-gray-700 mb-6"> senti... questa parte di codice non è ancora stata scritta </p>
+            <div class="flex justify-around space-x-4">
+            <button onclick="hideRecapConfirmation()"
+                        class="flex-1 px-4 py-2 bg-gray-200 text-gray-800 font-semibold rounded-lg hover:bg-gray-300 transition duration-150">
+                    Torna indietro
+                </button>
+            </div> 
+        </div>
+    </div> <!-- *** --><div class="chat-sotto"></div>
+</div>
+</div>
+<script src="scripted.js"></script>
+</body>
+</html>
