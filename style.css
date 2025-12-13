@@ -18,7 +18,26 @@ body{background-image: url(sfondo.jpg);
     box-shadow: 3px 3px 5px #000;
     background-image: url(img-start.jpg);
     background-position: 50% 26%;
-    background-size: 155%;}
+    background-size: 155%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;}
+
+.icona {background-color: purple;
+    margin-right: 1dvh;
+    font-size: 5dvh;
+    width: 7dvh;
+    height: 7dvh;
+    border-radius: 2dvh;
+    box-shadow: 3px 3px 10px #00000080;}
+
+.appunti {background-color: rgb(243, 243, 169);
+    margin-right: 1dvh;
+    font-size: 5dvh;
+    width: 7dvh;
+    height: 7dvh;
+    border-radius: 2dvh;
+    box-shadow: 3px 3px 10px #00000080;}
 
 .chat-box.DETECTIVE {
     background-image: url(img-detective.png);
