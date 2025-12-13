@@ -12,7 +12,8 @@
         const USER_PREFIX_KEY = 'gameUserPrefix';
         const USER_NAME_KEY = 'gameUserName';
         const SUBMITTED_CODES_KEY = 'submittedCodes';
-        
+        const USER_NOTES_KEY = 'gameUserNotes'; // <--- NUOVA CHIAVE PER LE NOTE
+
         // I prefissi validi che l'utente può inserire (Nascosti dall'interfaccia)
         const VALID_PREFIXES = ["DETECTIVE", "DOTTORE", "MEDIUM", "BIMBO", "AGENTE", "INFORMATIC", "BUSINESS", "STORICO", "PIZZA"];
         const imagination = ''
@@ -79,11 +80,17 @@
         const subjectFeedbackBox = document.getElementById('subjectFeedbackBox');
         const subjectFeedbackMessage = document.getElementById('subjectFeedbackMessage');
         const resetModal = document.getElementById('resetModal'); // Riferimento al Modal
+        const ShowPModal = document.getElementById('ShowPModal'); // Riferimento al Modal
+        const ShowNModal = document.getElementById('ShowNModal'); // Riferimento al Modal
         const recapModal = document.getElementById('recapModal'); // Riferimento al Modal
+        const noteInput = document.getElementById('noteInput');
+        const noteInputView = document.getElementById('noteInputView');
+
 
         // Funzione eseguita al caricamento della pagina
         window.onload = function() {
             loadUser();
+            loadCharacterNotes();
         };
 
         // ----------------------------------------------------------------
@@ -93,8 +100,26 @@
             resetModal.classList.remove('hidden');
         }
 
+        window.ShowPConfirmation = function() {
+            ShowPModal.classList.remove('hidden');
+        }
+
+        window.ShowNConfirmation = function() {
+            ShowNModal.classList.remove('hidden');
+        }
+
         window.hideResetConfirmation = function() {
             resetModal.classList.add('hidden');
+        }
+
+        window.hideShowPConfirmation = function() {
+            saveCharacterNotes();
+            ShowPModal.classList.add('hidden');
+        }
+
+        window.hideShowNConfirmation = function() {
+            saveCharacterNotes();
+            ShowNModal.classList.add('hidden');
         }
 
         // ----------------------------------------------------------------
@@ -249,12 +274,41 @@
             currentUserName = inputName;
             showGameView(inputName);
         }
+window.saveCharacterNotes = function() {
+            if (noteInput) {
+        const notes = noteInput.value.trim();
+        localStorage.setItem(USER_NOTES_KEY, notes);
+        console.log("Note del personaggio salvate.");
+        }}
+
+        window.loadCharacterNotes = function() {
+    if (noteInput) {
+        const savedNotes = localStorage.getItem(USER_NOTES_KEY);
+        if (savedNotes) {
+            noteInput.value = savedNotes;
+            console.log("Note del personaggio caricate.");
+        } else {
+             noteInput.value = ""; // Assicura che sia vuoto se non c'è nulla
+        }
+    } else {
+        // Se non trovi la textarea, prova a cercarla dopo un piccolo ritardo
+        // (utile se l'HTML viene caricato dopo)
+        setTimeout(() => {
+             const element = document.getElementById('noteInput');
+             if (element) {
+                 element.value = localStorage.getItem(USER_NOTES_KEY) || "";
+             }
+        }, 100);
+    }
+}
 
         // Resetta l'utente (cancella tutto, inclusi i codici)
         window.resetUser = function() {
             // Nasconde il modal prima di resettare
             hideResetConfirmation(); 
-            hideRecapConfirmation(); 
+            hideRecapConfirmation();
+            hideShowPConfirmation();
+            hideShowNConfirmation(); 
 
             localStorage.removeItem(USER_PREFIX_KEY);
             localStorage.removeItem(USER_NAME_KEY);
@@ -473,5 +527,5 @@ function coccole() {
                 displaySubjectFeedback(`${resultData.type}: ${resultData.subject} (già noto).`, false);
             }
         }
-
-
+const moddal=document.querySelector('.modal-content')
+moddal.scrollTop = modal.scrollHeight
