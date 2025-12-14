@@ -16,7 +16,7 @@ body{background-image: url(sfondo.jpg);
     border-radius: 8px;
     box-sizing: border-box;
     box-shadow: 3px 3px 5px #000;
-    background-image: url(img-start.jpg);
+    background-image: url(img-start-on.jpg);
     background-position: 50% 26%;
     background-size: 155%;
     display: flex;
@@ -40,54 +40,59 @@ body{background-image: url(sfondo.jpg);
     box-shadow: 3px 3px 10px #00000080;}
 
 .chat-box.DETECTIVE {
-    background-image: url(img-detective.png);
+    background-image: url(img-detective-on.png);
     border-image-width: 100%;
-    background-position: 48% 29%;
-background-size: 235%;}
+    background-position: 50% 10%;
+    background-size: 100%;}
 
 .chat-box.MEDIUM {
-    background-image: url(img-medium.png);
+    background-image: url(img-medium-on.png);
     border-image-width: 100%;
     background-position: 50% 28%;
+    background-size: 100%;
 }
 
 .chat-box.BIMBO {
-    background-image: url(img-bimbo.png);
+    background-image: url(img-bimbo-on.png);
     border-image-width: 100%;
-    background-position: 48% 28%;
-}
+    background-position: 48% 30%;
+    background-size: 100%;}
     
 .chat-box.DOTTORE {
-    background-image: url(img-dottore.png);
+    background-image: url(img-dottore-on.png);
     border-image-width: 100%;
-    background-position: 50% 25.5%;}
+    background-position: 50% 25.5%;
+background-size: 100%;}
 
 .chat-box.INFORMATIC {
-    background-image: url(img-informatico.png);
+    background-image: url(img-informatico-on.png);
     border-image-width: 100%;
     background-position: 38% 25.5%;
-background-size: 155%;}
+    background-size: 100%;}
     
 .chat-box.BUSINESS {
-    background-image: url(img-business.png);
+    background-image: url(img-business-on.png);
     border-image-width: 100%;
-    background-position: 50% 25%;}
+    background-position: 50% 25%;
+background-size: 100%;}
 
 .chat-box.AGENTE {
-    background-image: url(img-007.png);
+    background-image: url(img-007-on.png);
     border-image-width: 100%;
-    background-position: 50% 24%;}
+    background-position: 50% 24%;
+    background-size: 100%;}
 
 .chat-box.STORICO {
-    background-image: url(img-storico.png);
+    background-image: url(img-storico-on.png);
     border-image-width: 100%;
     background-position: 50% 28%;
-background-size: 230%;}
+    background-size: 100%;}
     
 .chat-box.PIZZA {
-    background-image: url(img-pizza.png);
+    background-image: url(img-pizza-on.png);
     border-image-width: 100%;
-    background-position: 50% 28%;}
+    background-position: 50% 31%;
+    background-size: 100%;}
 
 body{display:flex;}
 
@@ -100,56 +105,61 @@ body{display:flex;}
     border-radius: 8px;
     box-sizing: border-box;
     box-shadow: 3px 3px 5px #000;
-    background-image: url(img-start2.jpg);
+    background-image: url(img-start-off.jpg);
     background-position: 50% 58%;
     background-size: 155%;}
 
 
 .chat-sotto.DETECTIVE {
-    background-image: url(img-detective.png);
+    background-image: url(img-detective-off.png);
     border-image-width: 100%;
-    background-position: 50% 56%;
-background-size: 215%;}
+    background-position: 50% 0%;
+    background-size: 100%;}
 
 .chat-sotto.MEDIUM {
-    background-image: url(img-medium.png);
+    background-image: url(img-medium-off.png);
     border-image-width: 100%;
     background-position: 42% 66%;
-    background-size: 185%;
-}
+    background-size: 100%;}
 
 .chat-sotto.BIMBO {
-    background-image: url(img-bimbo.png);
+    background-image: url(img-bimbo-off.png);
     border-image-width: 100%;
-    background-position: 50% 60%;}
+    background-position: 50% 60%;
+    background-size: 100%;}
     
 .chat-sotto.DOTTORE {
-    background-image: url(img-dottore.png);
+    background-image: url(img-dottore-off.png);
     border-image-width: 100%;
-    background-position: 50% 84%;}
+    background-position: 50% 84%;
+    background-size: 100%;}
 
 .chat-sotto.INFORMATIC {
-    background-image: url(img-informatico.png);
+    background-image: url(img-informatico-off.png);
     border-image-width: 100%;
-    background-position: 50% 85%;}
+    background-position: 50% 85%;
+    background-size: 100%;}
     
 .chat-sotto.BUSINESS {
-    background-image: url(img-business.png);
+    background-image: url(img-business-off.png);
     border-image-width: 100%;
     background-position: 40% 56.5%;
-background-size: 165%;}
+    background-size: 100%;}
 
 .chat-sotto.AGENTE {
-    background-image: url(img-007.png);
+    background-image: url(img-007-off.png);
     border-image-width: 100%;
-    background-position: 50% 84%;}
+    background-position: 50% 84%;
+    background-size: 100%;}
 
 .chat-sotto.STORICO {
-    background-image: url(img-storico.png);
+    background-image: url(img-storico-off.png);
     border-image-width: 100%;
-    background-position: 50% 90%;}
+    background-position: 50% 90%;
+    background-size: 100%;}
     
 .chat-sotto.PIZZA {
-    background-image: url(img-pizza.png);
+    background-image: url(img-pizza-off.png);
     border-image-width: 100%;
-    background-position: 50% 90%;}
+    background-position: 50% 92%;
+    background-size: 100%;}
