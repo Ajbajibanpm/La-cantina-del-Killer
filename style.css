@@ -72,9 +72,9 @@ body {
 .icona {
   background-color: purple;
   margin-right: 1svh;
-  font-size: 5svh;
-  width: 7svh;
-  height: 7svh;
+  font-size: 4svh;
+  width: 6svh;
+  height: 6svh;
   border-radius: 2svh;
   box-shadow: 0.1875rem 0.1875rem 0.625rem #00000080; /* 3px 3px 10px */
 }
@@ -286,3 +286,4 @@ button {
   --raggio-urto: 100;            
   --bagliore-particelle: 10;     
 }
+
