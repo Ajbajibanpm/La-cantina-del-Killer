@@ -3,7 +3,26 @@
   box-sizing: border-box;
   font-family: Arial, Helvetica, sans-serif;}
 
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
 /*---------------------------------*/
+
+/* Stile per smartphone */
+@media (max-width: 768px) {
+  body {
+    padding: 10px; /* Riduci i margini esterni */
+  }
+  .container {
+    width: 100%; /* Occupa tutto lo spazio disponibile */
+    flex-direction: column; /* Se usi Flexbox, metti gli elementi uno sotto l'altro */
+  }
+}
+/*---------------------------------*/
+
 body{background-image: url(GeminiSfondo3.png);
     background-size: cover; 
     background-size: 100%;
@@ -33,9 +52,11 @@ body{background-image: url(GeminiSfondo3.png);
     border-radius: 8px;
     z-index: 1;}
 
-#contenente {background-color: white;}
+#contenente {background-color: white;
+max-width: 60dvw;}
 
 #contenuto {max-height: 50svh;
+    background-color: transparent;
     overflow-y: auto;
     --mask-height: 1rem; /* Altezza della sfumatura */
         mask-image: linear-gradient(
