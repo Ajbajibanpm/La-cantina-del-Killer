@@ -44,11 +44,11 @@ body {
 
 #contenente {
   background-color: white;
-  max-width: 60dvw;
+  max-width: 80dvw;
 }
 
 #contenuto {
-  max-height: 50svh;
+  max-height: 70svh;
   background-color: transparent;
   overflow-y: auto;
   --mask-height: 1rem; /* Altezza della sfumatura */
