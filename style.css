@@ -10,6 +10,7 @@
 
 body {
   background-image: url(GeminiSfondo3.png);
+  overflow-y: hidden;
   /* 1. Blocca la ripetizione */
   background-repeat: no-repeat;
   /* 2. Blocca lo sfondo così non scorre via con la pagina */
@@ -289,3 +290,4 @@ button {
   --raggio-urto: 100;            
   --bagliore-particelle: 10;     
 }
+
