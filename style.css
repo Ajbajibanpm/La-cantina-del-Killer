@@ -1,27 +1,36 @@
 * {margin:0; 
   padding:0; 
   box-sizing: border-box;
-  font-family: Arial, Helvetica, sans-serif;
-  ;}
+  font-family: Arial, Helvetica, sans-serif;}
 
 /*---------------------------------*/
-body{background-image: url(sfondo.jpg);
+body{background-image: url(GeminiSfondo3.png);
     background-size: cover; 
-    background-size: 155%;}
+    background-size: 100%;
+    display: flex !important;
+    flex-direction: column !important; /* Allinea in verticale */
+    align-items: center !important;    /* Centra destra/sinistra */
+    justify-content: flex-start !important; /* Parte dall'alto, non dal centro */
+    padding-top: 2rem !important;      /* Crea un po' di spazio sopra */
+    height: auto !important;           /* Permette alla pagina di allungarsi */
+    min-height: 100vh !important;
+    overflow-y: auto !important;}
+    
 .chat-box {
     height: calc(14dvh);
     padding: 40px 10px;
     margin-bottom: 30px; 
     margin-top: 5px; 
-    border-radius: 8px;
-    box-sizing: border-box;
-    box-shadow: 3px 3px 5px #000;
     background-image: url(img-start-on.jpg);
-    background-position: 50% 26%;
-    background-size: 155%;
+    background-position: 50% 15%;
     display: flex;
     justify-content: flex-end;
     align-items: center;}
+
+.contenitore {border: 0.1rem;
+    box-shadow: 3px 3px 5px #000;
+    background-size: 100%;
+    border-radius: 8px;}
 
 .icona {background-color: purple;
     margin-right: 1dvh;
@@ -39,62 +48,40 @@ body{background-image: url(sfondo.jpg);
     border-radius: 2dvh;
     box-shadow: 3px 3px 10px #00000080;}
 
-.chat-box.DETECTIVE {
+.chat-box.ruolo-0 { /*detective*/
     background-image: url(img-detective-on.png);
-    border-image-width: 100%;
-    background-position: 50% 10%;
-    background-size: 100%;}
+    background-position: 50% 10%;}
 
-.chat-box.MEDIUM {
-    background-image: url(img-medium-on.png);
-    border-image-width: 100%;
-    background-position: 50% 28%;
-    background-size: 100%;
-}
-
-.chat-box.BIMBO {
-    background-image: url(img-bimbo-on.png);
-    border-image-width: 100%;
-    background-position: 48% 30%;
-    background-size: 100%;}
-    
-.chat-box.DOTTORE {
+.chat-box.ruolo-1 { /*dottore*/
     background-image: url(img-dottore-on.png);
-    border-image-width: 100%;
-    background-position: 50% 25.5%;
-background-size: 100%;}
+    background-position: 50% 25.5%;}
 
-.chat-box.INFORMATIC {
-    background-image: url(img-informatico-on.png);
-    border-image-width: 100%;
-    background-position: 38% 25.5%;
-    background-size: 100%;}
-    
-.chat-box.BUSINESS {
-    background-image: url(img-business-on.png);
-    border-image-width: 100%;
-    background-position: 50% 25%;
-background-size: 100%;}
+.chat-box.ruolo-2 { /*medium*/
+    background-image: url(img-medium-on.png);
+    background-position: 50% 28%;}
 
-.chat-box.AGENTE {
+.chat-box.ruolo-3 { /*bimbo*/
+    background-image: url(img-bimbo-on.png);
+    background-position: 48% 30%;}
+
+.chat-box.ruolo-4 { /*agente*/
     background-image: url(img-007-on.png);
-    border-image-width: 100%;
-    background-position: 50% 24%;
-    background-size: 100%;}
+    background-position: 50% 24%;}
 
-.chat-box.STORICO {
-    background-image: url(img-storico-on.png);
-    border-image-width: 100%;
-    background-position: 50% 28%;
-    background-size: 100%;}
+.chat-box.ruolo-5 { /*informatico*/
+    background-image: url(img-informatico-on.png);
+    background-position: 38% 25.5%;}
     
-.chat-box.PIZZA {
-    background-image: url(img-pizza-on.png);
-    border-image-width: 100%;
-    background-position: 50% 31%;
-    background-size: 100%;}
+.chat-box.ruolo-6 { /*business*/
+    background-image: url(img-business-on.png);
+    background-position: 50% 25%;}
 
-body{display:flex;}
+.chat-box.ruolo-7 { /*storico*/
+    background-image: url(img-storico-on.png);}
+    
+.chat-box.ruolo-8 { /*pizza*/
+    background-image: url(img-pizza-on.png);
+    background-position: 50% 31%;}
 
 /* Stili originali: Sfondo predefinito */
 .chat-sotto {
@@ -102,64 +89,132 @@ body{display:flex;}
     padding: 40px 10px;
     margin-bottom: 5px; 
     margin-top: 30px; 
-    border-radius: 8px;
-    box-sizing: border-box;
-    box-shadow: 3px 3px 5px #000;
     background-image: url(img-start-off.jpg);
-    background-position: 50% 58%;
-    background-size: 155%;}
+    background-position: 50% 20%;
+    background-size: 100%;}
 
 
-.chat-sotto.DETECTIVE {
+.chat-sotto.ruolo-0 { /*detective*/
     background-image: url(img-detective-off.png);
-    border-image-width: 100%;
-    background-position: 50% 0%;
-    background-size: 100%;}
+    background-position: 50% 0%;}
 
-.chat-sotto.MEDIUM {
-    background-image: url(img-medium-off.png);
-    border-image-width: 100%;
-    background-position: 42% 66%;
-    background-size: 100%;}
-
-.chat-sotto.BIMBO {
-    background-image: url(img-bimbo-off.png);
-    border-image-width: 100%;
-    background-position: 50% 60%;
-    background-size: 100%;}
-    
-.chat-sotto.DOTTORE {
+.chat-sotto.ruolo-1 { /*dottore*/
     background-image: url(img-dottore-off.png);
-    border-image-width: 100%;
-    background-position: 50% 84%;
-    background-size: 100%;}
+    background-position: 50% 84%;}
 
-.chat-sotto.INFORMATIC {
-    background-image: url(img-informatico-off.png);
-    border-image-width: 100%;
-    background-position: 50% 85%;
-    background-size: 100%;}
+.chat-sotto.ruolo-2 { /*medium*/
+    background-image: url(img-medium-off.png);
+    background-position: 42% 66%;}
+
+.chat-sotto.ruolo-3 { /*bimbo*/
+    background-image: url(img-bimbo-off.png);
+    background-position: 50% 60%;}
     
-.chat-sotto.BUSINESS {
-    background-image: url(img-business-off.png);
-    border-image-width: 100%;
-    background-position: 40% 56.5%;
-    background-size: 100%;}
-
-.chat-sotto.AGENTE {
+.chat-sotto.ruolo-4 { /*agente*/
     background-image: url(img-007-off.png);
-    border-image-width: 100%;
-    background-position: 50% 84%;
-    background-size: 100%;}
+    background-position: 50% 84%;}
 
-.chat-sotto.STORICO {
-    background-image: url(img-storico-off.png);
-    border-image-width: 100%;
-    background-position: 50% 90%;
-    background-size: 100%;}
+.chat-sotto.ruolo-5 { /*informatico*/
+    background-image: url(img-informatico-off.png);
+    background-position: 50% 85%;
+    }
     
-.chat-sotto.PIZZA {
+.chat-sotto.ruolo-6 { /*business*/
+    background-image: url(img-business-off.png);
+    background-position: 40% 56.5%;}
+
+.chat-sotto.ruolo-7 { /*storico*/
+    background-image: url(img-storico-off.png);
+    background-position: 50% 0%;}
+    
+.chat-sotto.ruolo-8 { /*pizza*/
     background-image: url(img-pizza-off.png);
-    border-image-width: 100%;
-    background-position: 50% 92%;
-    background-size: 100%;}
+    background-position: 50% 92%;}
+
+.bulele {
+    padding: 0 15dvw 0 15dvw;
+    /* 1. Occupa tutto lo spazio verticale disponibile */            
+    flex-grow: 1; 
+    /* 2. Abilita lo scroll verticale *solo* per questo div */
+    overflow-y: auto;
+    max-height: 20dvh;}
+
+#bulelissima {font-family: 'Times New Roman';}
+
+#noteInput {font-family: 'Times New Roman'; 
+    background-size: 20%;   
+    border:none;
+    margin: 1dvw;
+    padding: 1dvw;            
+    background-attachment: local;}
+
+.cartaGiornale {background-image: url(daMenzionare.png);
+    background-size: 100% 100%;
+    position: centers;
+    padding-left: 2dvh;
+    padding-bottom: 13dvh;
+    padding-top: 13dvh;
+    gap: 3dvh;             
+    max-width: 85dvh;
+    width: 95%;
+    transform: translateY(-50px);
+    transition: transform 0.3s ease;
+    max-height: 80dvh; /* L'altezza massima totale rimane qui */
+    display: flex;
+    flex-direction: column; /* Impila gli elementi verticalmente */
+    overflow-y: hidden; /* Blocca lo scroll sul contenitore principale */
+    text-align: center;}
+
+.ChiudiClick {
+    /* Padding */
+    padding-left: 2rem;      /* px-8 */
+    padding-right: 2rem;     /* px-8 */
+    padding-top: 0.5rem;     /* py-2 */
+    padding-bottom: 0.5rem;  /* py-2 */
+    border: solid 1px;
+    /* Colori */
+    background-color: #b59a68; /* bg-gray-200 */
+    color: #1f2937;            /* text-gray-800 */
+    /* Stile Testo e Forma */
+    font-weight: 600;        /* font-semibold */
+    border-radius: 0.5rem;   /* rounded-lg */
+    /* Regola necessaria per il transition */
+    cursor: pointer;}
+
+.wordButton {
+    border: solid 1px;
+    background-color: white; /* bg-gray-200 */
+    color: #1f2937;            /* text-gray-800 */
+    font-weight: 300;        /* font-semibold */
+    border-radius: 0.5rem;   /* rounded-lg */
+    cursor: pointer;
+    padding: 5px 10px;
+    font-size: 0.8rem;}
+
+button {transition: all 0.3s;
+    text-transform: uppercase;
+}
+
+.note-container {display: flex;
+justify-content: end;
+gap: 2rem;}
+
+.ski { z-index: 1;}
+
+#canvasBrillantini {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1; 
+  background: transparent;
+  pointer-events: none;
+  /* --- PANNELLO DI CONTROLLO CSS --- */
+  --colore-particelle: 255, 55, 0;    /* Colore RGB (rosso: 255, 55, 0;)*/
+  --quantita-particelle: 30;    /* Più particelle rendono meno evidente il "buco" */
+  --velocita-particelle: 1.2;    /* Aumentata: aiuta a rimescolare le particelle velocemente */
+  --potenza-urto: 35;            /* Non troppo alta, altrimenti sfrecciano troppo */
+  --raggio-urto: 100;            /* Il valore che hai scelto */
+  --bagliore-particelle: 10;     /* Mantienilo basso per la fluidità (FPS alti) */
+}
