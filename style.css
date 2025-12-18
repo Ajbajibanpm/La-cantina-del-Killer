@@ -31,7 +31,10 @@ body{background-image: url(GeminiSfondo3.png);
     box-shadow: 3px 3px 5px #000;
     background-size: 100%;
     border-radius: 8px;
-}
+    z-index: 1;}
+
+#principale {max-height: 70svh;
+    overflow-y: auto;}
 
 .icona {background-color: purple;
     margin-right: 1svh;
@@ -200,7 +203,7 @@ button {transition: all 0.3s;
 justify-content: end;
 gap: 2rem;}
 
-.ski { z-index: 1;}
+.ski {z-index: 1;}
 
 #canvasBrillantini {
   position: fixed;
