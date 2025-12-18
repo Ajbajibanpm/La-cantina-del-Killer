@@ -9,16 +9,22 @@
 
 body {
   background-image: url(GeminiSfondo3.png);
+  /* 1. Blocca la ripetizione */
+  background-repeat: no-repeat;
+  /* 2. Blocca lo sfondo così non scorre via con la pagina */
+  background-attachment: fixed;
+  /* 3. Forza lo sfondo a coprire ogni angolo senza distorcersi */
   background-size: cover;
-  background-size: 100%;
+  /* 4. Centra l'immagine */
+  background-position: center;
+
   display: flex;
-  flex-direction: column; /* Allinea in verticale */
-  align-items: center;    /* Centra destra/sinistra */
-  justify-content: flex-start; /* Parte dall'alto, non dal centro */
-  padding-top: 2rem;      /* Crea un po' di spazio sopra */
-  height: auto;           /* Permette alla pagina di allungarsi */
-  max-height: 100vh;
-  overflow-y: hidden;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 2rem;
+  min-height: 100vh; /* Usa min-height invece di height */
+  margin: 0;
 }
 
 .chat-box {
