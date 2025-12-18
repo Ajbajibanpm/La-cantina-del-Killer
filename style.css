@@ -23,11 +23,13 @@ body {
 
 .chat-box {
   height: calc(14svh);
-  padding: 2.5rem 0.625rem; /* 40px 10px */
-  margin-bottom: 1.875rem;   /* 30px */
-  margin-top: 0.3125rem;     /* 5px */
+  padding: 2.5rem 0.625rem;
+  margin-bottom: 1.875rem;
+  margin-top: 0.3125rem;
   background-image: url(img-start-on.jpg);
-  background-position: 50% 15%;
+  background-position: center; /* Centra l'immagine */
+  background-repeat: no-repeat; /* EVITA LA RIPETIZIONE */
+  background-size: cover;      /* COPRE TUTTA L'AREA */
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -129,12 +131,13 @@ body {
 /* Stili originali: Sfondo predefinito */
 .chat-sotto {
   height: calc(14svh);
-  padding: 2.5rem 0.625rem; /* 40px 10px */
-  margin-bottom: 0.3125rem;   /* 5px */
-  margin-top: 1.875rem;      /* 30px */
+  padding: 2.5rem 0.625rem;
+  margin-bottom: 0.3125rem;
+  margin-top: 1.875rem;
   background-image: url(img-start-off.jpg);
-  background-position: 50% 20%;
-  background-size: 100%;
+  background-repeat: no-repeat; /* EVITA LA RIPETIZIONE */
+  background-position: center;
+  background-size: cover;      /* COPRE TUTTA L'AREA */
 }
 
 .chat-sotto.ruolo-0 { /*detective*/
