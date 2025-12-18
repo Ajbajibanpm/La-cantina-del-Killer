@@ -33,9 +33,11 @@ body {
   margin-bottom: 1.875rem;
   margin-top: 0.3125rem;
   background-image: url(img-start-on.jpg);
-  background-position: center; /* Centra l'immagine */
-  background-repeat: no-repeat; /* EVITA LA RIPETIZIONE */
-  background-size: cover;      /* COPRE TUTTA L'AREA */
+  background-position: 50% 15%;
+  /* AGGIUNGI QUESTE DUE RIGHE */
+  background-repeat: no-repeat;
+  background-size: cover; 
+  /* ------------------------ */
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -141,9 +143,11 @@ body {
   margin-bottom: 0.3125rem;
   margin-top: 1.875rem;
   background-image: url(img-start-off.jpg);
-  background-repeat: no-repeat; /* EVITA LA RIPETIZIONE */
-  background-position: center;
-  background-size: cover;      /* COPRE TUTTA L'AREA */
+  background-position: 50% 20%;
+  /* AGGIUNGI/MODIFICA QUESTE DUE RIGHE */
+  background-repeat: no-repeat;
+  background-size: cover; 
+  /* ------------------------ */
 }
 
 .chat-sotto.ruolo-0 { /*detective*/
