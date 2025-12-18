@@ -48,7 +48,7 @@ body {
 }
 
 #contenuto {
-  max-height: 70svh;
+  max-height: 55svh;
   background-color: transparent;
   overflow-y: auto;
   --mask-height: 1rem; /* Altezza della sfumatura */
@@ -79,15 +79,8 @@ body {
   box-shadow: 0.1875rem 0.1875rem 0.625rem #00000080; /* 3px 3px 10px */
 }
 
-.appunti {
-  background-color: rgb(243, 243, 169);
-  margin-right: 1svh;
-  font-size: 5svh;
-  width: 7svh;
-  height: 7svh;
-  border-radius: 2svh;
-  box-shadow: 0.1875rem 0.1875rem 0.625rem #00000080; /* 3px 3px 10px */
-}
+.icona.appunti {
+  background-color: rgb(243, 243, 169);}
 
 .chat-box.ruolo-0 { /*detective*/
   background-image: url(img-detective-on.png);
@@ -286,4 +279,3 @@ button {
   --raggio-urto: 100;            
   --bagliore-particelle: 10;     
 }
-
