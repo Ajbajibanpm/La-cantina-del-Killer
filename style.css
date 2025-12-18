@@ -34,10 +34,8 @@ body {
   margin-top: 0.3125rem;
   background-image: url(img-start-on.jpg);
   background-position: 50% 15%;
-  /* AGGIUNGI QUESTE DUE RIGHE */
-  background-repeat: no-repeat;
-  background-size: cover; 
-  /* ------------------------ */
+  background-repeat: no-repeat !important;
+  background-size: cover !important; /* Forza il cover */
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -46,7 +44,6 @@ body {
 .contenitore {
   border: 0.1rem;
   box-shadow: 0.1875rem 0.1875rem 0.3125rem #000; /* 3px 3px 5px */
-  background-size: 100%;
   border-radius: 0.5rem; /* 8px */
   z-index: 1;
   height: 100%;
@@ -144,10 +141,8 @@ body {
   margin-top: 1.875rem;
   background-image: url(img-start-off.jpg);
   background-position: 50% 20%;
-  /* AGGIUNGI/MODIFICA QUESTE DUE RIGHE */
-  background-repeat: no-repeat;
-  background-size: cover; 
-  /* ------------------------ */
+  background-repeat: no-repeat !important;
+  background-size: cover !important; /* Forza il cover */
 }
 
 .chat-sotto.ruolo-0 { /*detective*/
