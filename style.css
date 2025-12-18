@@ -10,29 +10,6 @@ img {
 
 /*---------------------------------*/
 
-/* Stile per smartphone */
-@media (max-width: 768px) {
-  body {
-    padding: 10px; /* Riduci i margini esterni */
-  }
-.card, .container { /* usa il selettore che hai usato per il box bianco */
-    width: 90%;          /* Occupa il 90% della larghezza dello schermo */
-    max-width: 400px;    /* Ma non diventare enorme sui tablet */
-    margin: 20px auto;   /* Centra la card e dai spazio sopra/sotto */
-    padding: 20px;       /* Spazio interno per non far toccare il testo ai bordi */
-    box-sizing: border-box; /* Fondamentale per far sì che il padding non allarghi la card */
-}
-h1 {
-        font-size: 1.5rem; /* Riduce un po' il titolo per farlo stare su meno righe */
-    }
-    
-    .codice-input {
-        width: 100%;
-        font-size: 18px; /* Più facile da cliccare e leggere */
-    }
-}
-/*---------------------------------*/
-
 body{background-image: url(GeminiSfondo3.png);
     background-size: cover; 
     background-size: 100%;
@@ -270,4 +247,5 @@ gap: 2rem;}
   --potenza-urto: 35;            /* Non troppo alta, altrimenti sfrecciano troppo */
   --raggio-urto: 100;            /* Il valore che hai scelto */
   --bagliore-particelle: 10;     /* Mantienilo basso per la fluidità (FPS alti) */
+
 }
