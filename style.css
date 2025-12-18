@@ -4,10 +4,9 @@
   font-family: Arial, Helvetica, sans-serif;}
 
 img {
-  max-width: 100%;
-  height: auto;
-  display: block;
-}
+    max-width: 100%;
+    height: auto;
+    display: block;}
 
 /*---------------------------------*/
 
@@ -16,10 +15,21 @@ img {
   body {
     padding: 10px; /* Riduci i margini esterni */
   }
-  .container {
-    width: 100%; /* Occupa tutto lo spazio disponibile */
-    flex-direction: column; /* Se usi Flexbox, metti gli elementi uno sotto l'altro */
-  }
+.card, .container { /* usa il selettore che hai usato per il box bianco */
+    width: 90%;          /* Occupa il 90% della larghezza dello schermo */
+    max-width: 400px;    /* Ma non diventare enorme sui tablet */
+    margin: 20px auto;   /* Centra la card e dai spazio sopra/sotto */
+    padding: 20px;       /* Spazio interno per non far toccare il testo ai bordi */
+    box-sizing: border-box; /* Fondamentale per far sì che il padding non allarghi la card */
+}
+h1 {
+        font-size: 1.5rem; /* Riduce un po' il titolo per farlo stare su meno righe */
+    }
+    
+    .codice-input {
+        width: 100%;
+        font-size: 18px; /* Più facile da cliccare e leggere */
+    }
 }
 /*---------------------------------*/
 
