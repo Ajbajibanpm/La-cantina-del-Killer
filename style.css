@@ -14,7 +14,7 @@ body{background-image: url(GeminiSfondo3.png);
     padding-top: 2rem !important;      /* Crea un po' di spazio sopra */
     height: auto !important;           /* Permette alla pagina di allungarsi */
     max-height: 100vh !important;
-    overflow-y: auto !important;}
+    overflow-y: hidden !important;}
     
 .chat-box {
     height: calc(14svh);
@@ -222,4 +222,5 @@ gap: 2rem;}
   --raggio-urto: 100;            /* Il valore che hai scelto */
   --bagliore-particelle: 10;     /* Mantienilo basso per la fluidità (FPS alti) */
 }
+
 
