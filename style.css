@@ -33,7 +33,7 @@ body{background-image: url(GeminiSfondo3.png);
     border-radius: 8px;
     z-index: 1;}
 
-#principale {max-height: 70svh;
+#principale {max-height: 50svh;
     overflow-y: auto;}
 
 .icona {background-color: purple;
@@ -222,3 +222,4 @@ gap: 2rem;}
   --raggio-urto: 100;            /* Il valore che hai scelto */
   --bagliore-particelle: 10;     /* Mantienilo basso per la fluidità (FPS alti) */
 }
+
