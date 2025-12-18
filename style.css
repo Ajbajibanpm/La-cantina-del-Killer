@@ -30,7 +30,7 @@ body {
 .titolo {font-size: 1.5rem !important;}
 
 .chat-box {
-  height: calc(13svh);
+  max-height: calc(13svh);
   padding: 2.5rem 0.625rem;
   margin-bottom: 1.875rem;
   margin-top: 0.3125rem;
@@ -137,7 +137,7 @@ body {
 
 /* Stili originali: Sfondo predefinito */
 .chat-sotto {
-  height: calc(13svh);
+  max-height: calc(13svh);
   padding: 2.5rem 0.625rem;
   margin-bottom: 0.3125rem;
   margin-top: 1.875rem;
