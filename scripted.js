@@ -15,7 +15,7 @@
         const USER_NOTES_KEY = 'gameUserNotes'; // <--- NUOVA CHIAVE PER LE NOTE
 
         // I prefissi validi che l'utente può inserire (Nascosti dall'interfaccia)
-        const VALID_PREFIXES = ["DETECTIVE", "DOTTORE", "MEDIUM", "BIMBO", "AGENTE", "INFORMATIC", "BUSINESS", "STORICO", "PIZZA"];
+        const VALID_PREFIXES = ["DETECTIVE", "DOTTORE", "MEDIUM", "BIMBO", "AGENTE", "INFORMATICO", "BUSINESS", "STORICO", "PIZZA"];
         const imagination = ''
         // TABELLA DEI CODICI - Aggiornata con la variabile 'type'
         const CODE_MAP = {
@@ -179,10 +179,10 @@
 
                     // L'elemento <li> è reso cliccabile e chiama reSubmitCode con il codice grezzo (rawCode)
                     listHtml += `
-                        <li class="clickable-subject"
+                        <li class="cliccabile-subject"
                             onclick="reSubmitCode('${rawCode}')">
-                            ${prefixedSubject}
-                        </li>
+                            ${prefixedSubject} 
+                        </li> <br>
                     `;
                 });
             
@@ -304,29 +304,46 @@ window.saveCharacterNotes = function() {
 
         // Resetta l'utente (cancella tutto, inclusi i codici)
         window.resetUser = function() {
-            // Nasconde il modal prima di resettare
+            // Nasconde i vari modal
             hideResetConfirmation(); 
             hideRecapConfirmation();
             hideShowPConfirmation();
             hideShowNConfirmation(); 
 
+            // 1. Pulizia LocalStorage
             localStorage.removeItem(USER_PREFIX_KEY);
             localStorage.removeItem(USER_NAME_KEY);
             localStorage.removeItem(SUBMITTED_CODES_KEY);
-            for (const ruoli of VALID_PREFIXES) {
-                // 1. Rimuove tutte le classi valide, pulendo lo stato
-                ImmagineSopra.classList.remove(ruoli);
-                ImmagineSotto.classList.remove(ruoli);}
-            jolly = ""; // Reset della variabile jolly
+            localStorage.removeItem(USER_NOTES_KEY);
+            localStorage.removeItem('prefix_salvato'); // Rimuoviamo anche questa chiave
+
+            // 2. Pulizia Classi Numeriche (ruolo-0, ruolo-1, ecc.)
+            // Usiamo l'array VALID_PREFIXES per sapere quanti numeri dobbiamo ciclare
+            VALID_PREFIXES.forEach((_, i) => {
+                ImmagineSopra.classList.remove(`ruolo-${i}`);
+                ImmagineSotto.classList.remove(`ruolo-${i}`);
+            });
+
+            // 3. Reset variabili globali
+            jolly = ""; 
             currentUserPrefix = null;
             currentUserName = null;
+
+            // 4. Reset Interfaccia
             updateSubmittedCodesDisplay([]);
-            displayResult("Il risultato apparirà qui dopo aver inserito un codice.", false, true); // Reset messaggio
-            displaySubjectFeedback("", false, true); // Reset feedback soggetto
+            displayResult("Il risultato apparirà qui dopo aver inserito un codice.", false, true);
+            displaySubjectFeedback("", false, true);
+            
+            // Svuota le note se presenti
+            if (noteInput) noteInput.value = "";
+
+            // 5. Ritorno alla vista iniziale
             showUserIdView();
 
-            // Opzionale: notifica di reset (solo in console, dato che alert è vietato)
-            console.log("Gioco resettato completamente.");
+            // 6. Reset dei brillantini al colore originale (CSS)
+            if (typeof init === 'function') init();
+
+            console.log("Gioco resettato e immagini ripristinate.");
         }
 
         // ----------------------------------------------------------------
@@ -341,18 +358,25 @@ window.saveCharacterNotes = function() {
 
 // Definizione della funzione (come l'hai fornita)
 function coccole() {
-    for (const ruoli of VALID_PREFIXES) {
-        // 1. Rimuove tutte le classi valide, pulendo lo stato
-        ImmagineSopra.classList.remove(ruoli);
-        ImmagineSotto.classList.remove(ruoli);
+    // 1. Trova l'indice del ruolo attuale nell'array
+    const indiceRuolo = VALID_PREFIXES.indexOf(currentUserPrefix);
+
+    // 2. Pulizia: rimuoviamo tutte le possibili classi "ruolo-X"
+    for (let i = 0; i < VALID_PREFIXES.length; i++) {
+        ImmagineSopra.classList.remove(`ruolo-${i}`);
+        ImmagineSotto.classList.remove(`ruolo-${i}`);
+    }
+
+    // 3. Se il ruolo è valido (indice trovato), aggiungiamo la classe numerica
+    if (indiceRuolo !== -1) {
+        const classeDinamica = `ruolo-${indiceRuolo}`;
+        ImmagineSopra.classList.add(classeDinamica);
+        ImmagineSotto.classList.add(classeDinamica);
         
+        localStorage.setItem('prefix_salvato', currentUserPrefix);
         
-        // 2. Se è il ruolo corretto, lo aggiunge di nuovo (solo uno sarà aggiunto)
-        if (currentUserPrefix === ruoli) { 
-            ImmagineSopra.classList.add(ruoli);
-            ImmagineSotto.classList.add(ruoli);
-            localStorage.setItem('prefix_salvato', currentUserPrefix);
-        }
+        // Aggiorna anche i brillantini!
+        if (typeof init === 'function') init(); 
     }
 }
     // Rimuovi SEMPRE la classe per pulire lo stato precedente
@@ -527,5 +551,154 @@ function coccole() {
                 displaySubjectFeedback(`${resultData.type}: ${resultData.subject} (già noto).`, false);
             }
         }
-const moddal=document.querySelector('.modal-content')
-moddal.scrollTop = modal.scrollHeight
+const moddal=document.querySelector('.cartaGiornale')
+moddal.scrollTop = moddal.scrollHeight
+
+
+// BRILLANTINI
+
+const canvas = document.getElementById('canvasBrillantini');
+const ctx = canvas.getContext('2d');
+let particlesArray = [];
+
+// Funzione per leggere le variabili CSS aggiornate
+const getCSSVar = (prop) => getComputedStyle(canvas).getPropertyValue(prop).trim();
+
+window.addEventListener('mousedown', (e) => esplosione(e.clientX, e.clientY));
+window.addEventListener('touchstart', (e) => {
+    esplosione(e.touches[0].clientX, e.touches[0].clientY);
+});
+
+function esplosione(x, y) {
+    const stile = getComputedStyle(canvas);
+    
+    // Leggiamo sia la potenza che il raggio dal CSS
+    const potenza = parseFloat(getCSSVar('--potenza-urto')) || 40;
+    const raggioUrto = parseFloat(getCSSVar('--raggio-urto')) || 300;
+    
+    particlesArray.forEach(p => {
+        const dx = p.x - x;
+        const dy = p.y - y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        
+        // Usiamo la variabile raggioUrto invece del numero fisso 600
+        if (distance < raggioUrto) {
+            // La forza diminuisce man mano che ci si allontana dal centro del tocco
+            const force = potenza / (distance / 20 + 1);
+            const dirX = dx / distance;
+            const dirY = dy / distance;
+
+            p.vx += dirX * force;
+            p.vy += dirY * force;
+        }
+    });
+}
+
+function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    init(); 
+}
+
+window.addEventListener('resize', resizeCanvas);
+
+class Particle {
+    constructor(color, speedMult, glow) {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 3 + 1;
+        this.color = color;
+        this.glow = glow;
+        this.opacity = Math.random() * 0.5 + 0.2;
+        
+        // Velocità di crociera letta dal CSS
+        this.baseVx = (Math.random() - 0.5) * speedMult;
+        this.baseVy = (Math.random() - 0.5) * speedMult;
+        
+        this.vx = this.baseVx;
+        this.vy = this.baseVy;
+        this.friction = 0.94; 
+    }
+
+    update() {
+        this.vx = this.baseVx + (this.vx - this.baseVx) * this.friction;
+        this.vy = this.baseVy + (this.vy - this.baseVy) * this.friction;
+
+        this.x += this.vx;
+        this.y += this.vy;
+
+        // Reset velocità al teletrasporto
+        if (this.x > canvas.width || this.x < 0 || this.y > canvas.height || this.y < 0) {
+            if (this.x > canvas.width) this.x = 0;
+            else if (this.x < 0) this.x = canvas.width;
+            if (this.y > canvas.height) this.y = 0;
+            else if (this.y < 0) this.y = canvas.height;
+            
+            this.vx = this.baseVx;
+            this.vy = this.baseVy;
+        }
+    }
+
+    draw() {
+        ctx.shadowBlur = this.glow;
+        ctx.shadowColor = `rgba(${this.color}, 0.8)`;
+        ctx.fillStyle = `rgba(${this.color}, ${this.opacity})`;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+    }
+}
+
+function init() {
+    particlesArray = [];
+    const stile = getComputedStyle(canvas);
+    
+    const quantita = parseInt(getCSSVar('--quantita-particelle')) || 100;
+    const velocita = parseFloat(getCSSVar('--velocita-particelle')) || 0.2;
+    const bagliore = parseFloat(getCSSVar('--bagliore-particelle')) || 10;
+    
+    // Recuperiamo il ruolo attuale dal localStorage
+    const savedRole = localStorage.getItem('gameUserPrefix'); 
+
+    let colore;
+    
+    // CONFRONTO DINAMICO: Verifica se il ruolo salvato è uguale al terzo elemento della lista (indice 2)
+    if (savedRole === VALID_PREFIXES[1]) {
+        colore = "0, 255, 0;";} // Verde (Dottore)
+    else if (savedRole === VALID_PREFIXES[2]) {
+        colore = "147, 112, 219";} // Viola (Medium)
+    else if (savedRole === VALID_PREFIXES[3]) {
+        colore = "0, 200, 200";} // Azzurro (Bimbo)
+    else if (savedRole === VALID_PREFIXES[4]) {
+        colore = "255, 155, 50";} // Arancione (Agente)
+    else if (savedRole === VALID_PREFIXES[5]) {
+        colore = "0, 82, 89";} // Blu (Informatico)
+    else if (savedRole === VALID_PREFIXES[6]) {
+        colore = "150, 152, 159";} // Grigio (Business)
+    else if (savedRole === VALID_PREFIXES[7]) {
+        colore = "255, 200, 100";} // Oro (Storico)
+    else if (savedRole === VALID_PREFIXES[8]) {
+        colore = "255, 255, 0";} // Giallo (Pizza)
+    
+    
+    else {
+        colore = getCSSVar('--colore-particelle') || "255, 255, 255"; 
+    }
+
+    for (let i = 0; i < quantita; i++) {
+        particlesArray.push(new Particle(colore, velocita, bagliore));
+    }
+}
+
+function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height); 
+    particlesArray.forEach(p => {
+        p.update();
+        p.draw();
+    });
+    requestAnimationFrame(animate);
+}
+
+resizeCanvas(); 
+animate();
