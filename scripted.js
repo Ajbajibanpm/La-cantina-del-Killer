@@ -493,7 +493,7 @@ function coccole() {
             codeInput.value = '';
 
             if (inputGameCode === "") {
-                displayResult("Per favore, inserisci un codice di gioco.", false);
+                displayResult("Per favore, inserisci un codice di gioco valido.", false);
                 displaySubjectFeedback("", false, true);
                 return;
             }
