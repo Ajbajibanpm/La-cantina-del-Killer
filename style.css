@@ -59,8 +59,8 @@ max-width: 60dvw;}
 .icona {background-color: purple;
     margin-right: 1svh;
     font-size: 5svh;
-    width: 7svh;
-    height: 7svh;
+    width: 5svh;
+    height: 5svh;
     border-radius: 2svh;
     box-shadow: 3px 3px 10px #00000080;}
 
@@ -243,4 +243,5 @@ gap: 2rem;}
   --bagliore-particelle: 10;     /* Mantienilo basso per la fluidità (FPS alti) */
 
 }
+
 
