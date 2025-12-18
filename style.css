@@ -39,7 +39,7 @@ body {
   background-size: 100%;
   border-radius: 0.5rem; /* 8px */
   z-index: 1;
-  height: auto;
+  height: 100%;
 }
 
 #contenente {
