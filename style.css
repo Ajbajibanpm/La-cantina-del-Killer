@@ -29,7 +29,7 @@ body{background-image: url(GeminiSfondo3.png);
 
 .contenitore {border: 0.1rem;
     box-shadow: 3px 3px 5px #000;
-    background-size: 100%;
+    background-size: 110%;
     border-radius: 8px;}
 
 .icona {background-color: purple;
@@ -218,3 +218,4 @@ gap: 2rem;}
   --raggio-urto: 100;            /* Il valore che hai scelto */
   --bagliore-particelle: 10;     /* Mantienilo basso per la fluidità (FPS alti) */
 }
+
