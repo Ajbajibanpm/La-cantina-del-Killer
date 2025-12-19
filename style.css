@@ -23,9 +23,8 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  padding-top: 2rem;
-  min-height: 100vh; /* Usa min-height invece di height */
-  margin: 0;
+  padding-top: 0rem;
+  min-height: 100svh; /* Usa min-height invece di height */
 }
 
 .titolo {font-size: 1.5rem !important;}
@@ -34,7 +33,7 @@ body {
   max-height: calc(13svh);
   padding: 2.5rem 0.625rem;
   margin-bottom: 1.875rem;
-  margin-top: 0.3125rem;
+  margin-top: 0rem;
   background-image: url(img-start-on.jpg);
   background-position: 50% 15%;
   background-repeat: no-repeat !important;
@@ -140,7 +139,7 @@ body {
 .chat-sotto {
   max-height: calc(13svh);
   padding: 2.5rem 0.625rem;
-  margin-bottom: 0.3125rem;
+  margin-bottom: 0rem;
   margin-top: 1.875rem;
   background-image: url(img-start-off.jpg);
   background-position: 50% 20%;
@@ -232,6 +231,8 @@ body {
   text-align: center;
 }
 
+textarea {background-color: transparent;}
+
 .ChiudiClick {
   /* Padding */
   padding-left: 2rem;      
@@ -290,4 +291,3 @@ button {
   --raggio-urto: 100;            
   --bagliore-particelle: 10;     
 }
-
