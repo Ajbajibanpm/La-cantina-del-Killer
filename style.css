@@ -22,7 +22,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   padding-top: 0rem;
   min-height: 100svh; /* Usa min-height invece di height */
 }
@@ -53,7 +53,7 @@ body {
 
 #contenente {
   background-color: white;
-  max-width: 80dvw;
+  max-width: 80svw;
 }
 
 #contenuto {
@@ -222,7 +222,6 @@ body {
   gap: 1svh;             
   max-width: 85svh;
   width: 95%;
-  transform: translateY(-3.125rem); /* -50px */
   transition: transform 0.3s ease;
   max-height: 80svh; /* L'altezza massima totale rimane qui */
   display: flex;
